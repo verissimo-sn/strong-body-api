@@ -1,0 +1,24 @@
+package com.aitech.strongBody.useCase.exercise;
+
+import com.aitech.strongBody.repository.ExerciseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class DeleteExerciseUseCase {
+
+    @Autowired
+    ExerciseRepository exerciseRepository;
+
+    public void execute(String id) {
+        this.getExerciseById(id);
+        this.exerciseRepository.deleteById(id);
+    }
+
+    private void getExerciseById(String id) {
+        var foundExercise = this.exerciseRepository.findById(id);
+        if (foundExercise.isEmpty()) {
+            throw new RuntimeException("Exercise not found");
+        }
+    }
+}
