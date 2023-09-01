@@ -42,10 +42,7 @@ public class ExerciseController {
             @PathVariable(value="id") String id
     ) {
         var foundExercise = this.getExerciseByIdUseCase.execute(id);
-        if(foundExercise.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(foundExercise.get());
+        return ResponseEntity.status(HttpStatus.OK).body(foundExercise);
     }
 
     @PostMapping

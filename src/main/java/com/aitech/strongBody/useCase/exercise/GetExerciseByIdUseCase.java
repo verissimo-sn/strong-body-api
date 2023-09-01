@@ -5,16 +5,14 @@ import com.aitech.strongBody.repository.ExerciseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class GetExerciseByIdUseCase {
     @Autowired
     ExerciseRepository exerciseRepository;
 
-    public Optional<ExerciseDocument> execute(String id) {
+    public ExerciseDocument execute(String id) {
         this.getExerciseById(id);
-        return this.exerciseRepository.findById(id);
+        return this.exerciseRepository.findById(id).get();
     }
 
     private void getExerciseById(String id) {
