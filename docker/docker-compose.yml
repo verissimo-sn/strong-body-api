@@ -3,7 +3,7 @@ version: '3.8'
 services:
   db:
     image: mongo
-    container_name: "strong-body-db"
+    container_name: "strong_body_db"
     restart: always
     ports:
       - 27017:27017
