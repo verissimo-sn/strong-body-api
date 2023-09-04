@@ -12,14 +12,10 @@ public class GetExerciseByIdUseCase {
     ExerciseRepository exerciseRepository;
 
     public ExerciseDocument execute(String id) {
-        this.getExerciseById(id);
-        return this.exerciseRepository.findById(id).get();
-    }
-
-    private void getExerciseById(String id) {
         var foundExercise = this.exerciseRepository.findById(id);
         if (foundExercise.isEmpty()) {
             throw new NotFoundException("Exercise not found");
         }
+        return foundExercise.get();
     }
 }
