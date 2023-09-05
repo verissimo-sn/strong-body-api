@@ -23,7 +23,8 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @DisplayName("getExerciseListUseCase")
 public class GetExerciseListUseCaseTests {
-    final Pageable withPage = Pageable.ofSize(1).withPage(0);
+    final Pageable pageInput = Pageable.ofSize(1).withPage(0);
+    final Page<ExerciseDocument> fakeExercisePage =  new PageImpl<>(List.of(new ExerciseDocument()));
 
     @InjectMocks
     private GetExerciseListUseCase getExerciseListUseCase;
@@ -33,15 +34,16 @@ public class GetExerciseListUseCaseTests {
 
     @BeforeEach
     void buildSetUp() {
-        var fakeExercise = new ExerciseDocument();
-       when(this.exerciseRepository.findAll(withPage)).thenReturn(new PageImpl<>(List.of(fakeExercise)));
+       when(this.exerciseRepository.findAll(pageInput)).thenReturn(fakeExercisePage);
     }
 
     @Test
     @DisplayName("Should find and paginate exercises")
     void shouldFindExercise() {
-        var exercise = this.getExerciseListUseCase.execute(withPage);
+        var exercise = this.getExerciseListUseCase.execute(pageInput);
+        var content = exercise.getContent();
         assertInstanceOf(Page.class, exercise);
+        assertInstanceOf(ExerciseDocument.class, content.get(0));
         assertEquals(1, exercise.getTotalElements());
     }
 }
