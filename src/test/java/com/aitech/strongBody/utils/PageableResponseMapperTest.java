@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,9 +14,7 @@ public class PageableResponseMapperTest {
 
     @Test
     void shouldReturnPageableEntityList() {
-        final var fakePageableList = new PageImpl(new ArrayList<>(List.of(
-                new ExerciseDocument()
-        )));
+        final var fakePageableList = new PageImpl<>(List.of(new ExerciseDocument()));
         final var response = PageableResponseMapper.toPagination(fakePageableList);
 
         assertEquals(fakePageableList.getContent(), response.get("data"));
