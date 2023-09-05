@@ -1,4 +1,4 @@
-package com.aitech.strongBody.document;
+package com.aitech.strongBody.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

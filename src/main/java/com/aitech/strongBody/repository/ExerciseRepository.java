@@ -1,6 +1,6 @@
 package com.aitech.strongBody.repository;
 
-import com.aitech.strongBody.document.ExerciseDocument;
+import com.aitech.strongBody.entity.ExerciseDocument;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.aitech.strongBody.useCase.exercise;
 
-import com.aitech.strongBody.document.ExerciseDocument;
+import com.aitech.strongBody.entity.ExerciseDocument;
 import com.aitech.strongBody.exception.NotFoundException;
 import com.aitech.strongBody.repository.ExerciseRepository;
 import org.junit.jupiter.api.BeforeEach;

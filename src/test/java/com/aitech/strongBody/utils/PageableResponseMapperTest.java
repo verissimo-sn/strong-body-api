@@ -1,6 +1,6 @@
 package com.aitech.strongBody.utils;
 
-import com.aitech.strongBody.document.ExerciseDocument;
+import com.aitech.strongBody.entity.ExerciseDocument;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;

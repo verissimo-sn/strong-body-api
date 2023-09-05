@@ -1,6 +1,6 @@
 package com.aitech.strongBody.controller;
 
-import com.aitech.strongBody.document.ExerciseDocument;
+import com.aitech.strongBody.entity.ExerciseDocument;
 import com.aitech.strongBody.dto.exercise.CreateExerciseDto;
 import com.aitech.strongBody.dto.exercise.UpdateExerciseDto;
 import com.aitech.strongBody.useCase.exercise.*;
