@@ -2,14 +2,15 @@ package com.aitech.strongBody.useCase.exercise;
 
 import com.aitech.strongBody.entity.ExerciseDocument;
 import com.aitech.strongBody.dto.exercise.CreateExerciseDto;
-import com.aitech.strongBody.repository.ExerciseRepository;
+import com.aitech.strongBody.repository.JpaExerciseRepositoryImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CreateExerciseUseCase {
     @Autowired
-    ExerciseRepository exerciseRepository;
+    private JpaExerciseRepositoryImpl exerciseRepository;
 
     public void execute(CreateExerciseDto input) {
         this.exerciseRepository.insert(this.dtoToDocument(input));

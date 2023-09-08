@@ -2,7 +2,7 @@ package com.aitech.strongBody.useCase.exercise;
 
 import com.aitech.strongBody.entity.ExerciseDocument;
 import com.aitech.strongBody.exception.NotFoundException;
-import com.aitech.strongBody.repository.ExerciseRepository;
+import com.aitech.strongBody.repository.JpaExerciseRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -26,7 +26,7 @@ public class GetExerciseByIdUseCaseTests {
     private GetExerciseByIdUseCase getExerciseByIdUseCase;
 
     @Mock
-    private ExerciseRepository exerciseRepository;
+    private JpaExerciseRepositoryImpl exerciseRepository;
 
     @BeforeEach
     void buildSetUp() {

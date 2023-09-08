@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.aitech.strongBody.dto.exercise.CreateExerciseDto;
 import com.aitech.strongBody.entity.ExerciseDocument;
-import com.aitech.strongBody.repository.ExerciseRepository;
+import com.aitech.strongBody.repository.JpaExerciseRepositoryImpl;
 
 @Tag("Unit")
 @SpringBootTest
@@ -26,7 +26,7 @@ public class CreateExerciseUseCaseTests {
     private CreateExerciseUseCase createExerciseUseCase;
 
     @Mock
-    private ExerciseRepository exerciseRepository;
+    private JpaExerciseRepositoryImpl exerciseRepository;
 
     @BeforeEach
     void buildSetUp() {

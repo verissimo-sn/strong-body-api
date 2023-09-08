@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.aitech.strongBody.dto.exercise.UpdateExerciseDto;
 import com.aitech.strongBody.entity.ExerciseDocument;
 import com.aitech.strongBody.exception.NotFoundException;
-import com.aitech.strongBody.repository.ExerciseRepository;
+import com.aitech.strongBody.repository.JpaExerciseRepositoryImpl;
 
 @Tag("Unit")
 @SpringBootTest
@@ -31,7 +31,7 @@ public class UpdateExerciseUseCaseTests {
     private UpdateExerciseUseCase updateExerciseUseCase;
 
     @Mock
-    private ExerciseRepository exerciseRepository;
+    private JpaExerciseRepositoryImpl exerciseRepository;
 
     @BeforeEach
     void buildSetUp() {

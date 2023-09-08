@@ -3,7 +3,7 @@ package com.aitech.strongBody.useCase.exercise;
 import com.aitech.strongBody.entity.ExerciseDocument;
 import com.aitech.strongBody.dto.exercise.UpdateExerciseDto;
 import com.aitech.strongBody.exception.NotFoundException;
-import com.aitech.strongBody.repository.ExerciseRepository;
+import com.aitech.strongBody.repository.JpaExerciseRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class UpdateExerciseUseCase {
 
     @Autowired
-    ExerciseRepository exerciseRepository;
+    private JpaExerciseRepositoryImpl exerciseRepository;
 
     public void execute(UpdateExerciseDto input, String id) {
         var exercise = this.getExerciseById(id);
