@@ -2,7 +2,7 @@ package com.aitech.strongBody.useCase.exercise;
 
 import com.aitech.strongBody.entity.ExerciseDocument;
 import com.aitech.strongBody.exception.NotFoundException;
-import com.aitech.strongBody.repository.JpaExerciseRepositoryImpl;
+import com.aitech.strongBody.repository.ExerciseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -27,7 +27,7 @@ public class DeleteExerciseUseCaseTests {
     private DeleteExerciseUseCase deleteExerciseUseCase;
 
     @Mock
-    private JpaExerciseRepositoryImpl exerciseRepository;
+    private ExerciseRepository exerciseRepository;
 
     @BeforeEach
     void buildSetUp() {

@@ -1,7 +1,7 @@
 package com.aitech.strongBody.useCase.exercise;
 
 import com.aitech.strongBody.exception.NotFoundException;
-import com.aitech.strongBody.repository.JpaExerciseRepositoryImpl;
+import com.aitech.strongBody.repository.ExerciseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class DeleteExerciseUseCase {
 
     @Autowired
-    private JpaExerciseRepositoryImpl exerciseRepository;
+    private ExerciseRepository exerciseRepository;
 
     public void execute(String id) {
         this.getExerciseById(id);

@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.aitech.strongBody.entity.ExerciseDocument;
-import com.aitech.strongBody.repository.JpaExerciseRepositoryImpl;
+import com.aitech.strongBody.repository.ExerciseRepository;
 import com.aitech.strongBody.useCase.exercise.CreateExerciseUseCase;
 import com.aitech.strongBody.useCase.exercise.DeleteExerciseUseCase;
 import com.aitech.strongBody.useCase.exercise.GetExerciseByIdUseCase;
@@ -48,7 +48,7 @@ public class ExerciseControllerTests {
   // private DeleteExerciseUseCase deleteExerciseUseCase;
 
   @Mock
-  private JpaExerciseRepositoryImpl exerciseRepository;
+  private ExerciseRepository exerciseRepository;
 
   private ExerciseDocument fakeExerciseDocument;
   private List<ExerciseDocument> fakeExerciseDocumentList;
