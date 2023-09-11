@@ -3,7 +3,6 @@ package com.aitech.strongBody.application.useCase.exercise;
 import com.aitech.strongBody.application.exception.NotFoundException;
 import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.domain.repository.ExerciseRepository;
-import com.aitech.strongBody.infra.rest.dto.exercise.UpdateExerciseDto;
 
 import java.util.UUID;
 
@@ -17,19 +16,18 @@ public class UpdateExerciseUseCase {
         this.repository = exerciseRepository;
     }
 
-    public void execute(UpdateExerciseDto input, UUID id) {
-        this.getExerciseById(id);
-        var updatedExercise = Exercise.builder()
-            .id(id)
-            .name(input.name())
-            .description(input.description())
-            .level(input.level())
-            .type(input.type())
-            .equipment(input.equipment())
-            .imageUrl(input.imageUrl())
-            .videoUrl(input.videoUrl())
-            .build();
-        this.repository.update(updatedExercise);
+    public void execute(Exercise input) {
+        var exercise = this.getExerciseById(input.getId());
+        exercise.update(
+            input.getName(),
+            input.getDescription(),
+            input.getLevel(),
+            input.getType(),
+            input.getEquipment(),
+            input.getImageUrl(),
+            input.getVideoUrl()
+        );
+        this.repository.update(exercise);
     }
 
     private Exercise getExerciseById(UUID id) {

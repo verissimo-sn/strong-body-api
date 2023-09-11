@@ -61,7 +61,16 @@ public class ExerciseController {
 
     @PostMapping
     public ResponseEntity<?> createExercise(@RequestBody @Valid CreateExerciseDto input) {
-        this.createExerciseUseCase.execute(input);
+        Exercise exercise = new Exercise(
+            input.name(),
+            input.description(),
+            input.level(),
+            input.type(),
+            input.equipment(),
+            input.imageUrl(),
+            input.videoUrl()
+        );
+        this.createExerciseUseCase.execute(exercise);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -70,8 +79,18 @@ public class ExerciseController {
             @RequestBody @Valid UpdateExerciseDto input,
             @PathVariable(value="id") UUID id
     ) {
-        this.updateExerciseUseCase.execute(input, id);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        Exercise exercise = Exercise.builder()
+                .id(id)
+                .name(input.name())
+                .description(input.description())
+                .level(input.level())
+                .type(input.type())
+                .equipment(input.equipment())
+                .imageUrl(input.imageUrl())
+                .videoUrl(input.videoUrl())
+                .build();
+        this.updateExerciseUseCase.execute(exercise);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{id}")
@@ -79,6 +98,6 @@ public class ExerciseController {
             @PathVariable(value="id") UUID id
     ) {
         this.deleteExerciseUseCase.execute(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

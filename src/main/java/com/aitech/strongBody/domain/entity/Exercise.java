@@ -19,7 +19,7 @@ public class Exercise extends BaseEntity {
   private String imageUrl;
   private String videoUrl;
 
-  public Exercise updateExercise(
+  public Exercise update(
     final String name,
     final String description,
     final String level,

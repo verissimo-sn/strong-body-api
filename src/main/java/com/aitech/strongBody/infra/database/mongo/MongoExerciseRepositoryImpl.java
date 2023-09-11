@@ -3,17 +3,23 @@ package com.aitech.strongBody.infra.database.mongo;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
 import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.domain.repository.ExerciseRepository;
 import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
 
+@Component
+@Primary
 public class MongoExerciseRepositoryImpl implements ExerciseRepository {
-  private final MongoExerciseRepository repository;
+  private final SpringDataMongoExerciseRepository repository;
 
-  public MongoExerciseRepositoryImpl(MongoExerciseRepository repository) {
+  @Autowired
+  public MongoExerciseRepositoryImpl(SpringDataMongoExerciseRepository repository) {
     this.repository = repository;
   }
   
@@ -49,7 +55,7 @@ public class MongoExerciseRepositoryImpl implements ExerciseRepository {
   private Exercise fromDocumentToEntity(ExerciseDocument document) {
     Exercise exerciseEntity = Exercise
         .builder()
-        .id(UUID.fromString(document.getId()))
+        .id(document.getId())
         .name(document.getName())
         .description(document.getDescription())
         .level(document.getLevel())
@@ -63,7 +69,7 @@ public class MongoExerciseRepositoryImpl implements ExerciseRepository {
 
   private ExerciseDocument fromEntityToDocument(Exercise entity) {
     ExerciseDocument exerciseDocument = new ExerciseDocument();
-    exerciseDocument.setId(entity.getId().toString());
+    exerciseDocument.setId(entity.getId());
     exerciseDocument.setName(entity.getName());
     exerciseDocument.setDescription(entity.getDescription());
     exerciseDocument.setLevel(entity.getLevel());
@@ -73,5 +79,4 @@ public class MongoExerciseRepositoryImpl implements ExerciseRepository {
     exerciseDocument.setVideoUrl(entity.getVideoUrl());
     return exerciseDocument;
   }
-  
 }
