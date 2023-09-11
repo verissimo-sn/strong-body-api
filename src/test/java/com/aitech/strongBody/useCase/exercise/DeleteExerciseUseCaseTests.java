@@ -1,8 +1,9 @@
 package com.aitech.strongBody.useCase.exercise;
 
-import com.aitech.strongBody.entity.ExerciseDocument;
 import com.aitech.strongBody.exception.NotFoundException;
-import com.aitech.strongBody.repository.ExerciseRepository;
+import com.aitech.strongBody.infra.database.ExerciseRepository;
+import com.aitech.strongBody.infra.database.model.ExerciseDocument;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;

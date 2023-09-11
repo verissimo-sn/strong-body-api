@@ -12,8 +12,8 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.aitech.strongBody.dto.exercise.CreateExerciseDto;
-import com.aitech.strongBody.entity.ExerciseDocument;
-import com.aitech.strongBody.repository.ExerciseRepository;
+import com.aitech.strongBody.infra.database.ExerciseRepository;
+import com.aitech.strongBody.infra.database.model.ExerciseDocument;
 
 @Tag("Unit")
 @SpringBootTest

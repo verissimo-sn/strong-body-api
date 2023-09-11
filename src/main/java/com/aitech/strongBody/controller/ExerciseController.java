@@ -1,8 +1,8 @@
 package com.aitech.strongBody.controller;
 
-import com.aitech.strongBody.entity.ExerciseDocument;
 import com.aitech.strongBody.dto.exercise.CreateExerciseDto;
 import com.aitech.strongBody.dto.exercise.UpdateExerciseDto;
+import com.aitech.strongBody.infra.database.model.ExerciseDocument;
 import com.aitech.strongBody.useCase.exercise.*;
 import com.aitech.strongBody.utils.PageableResponseMapper;
 import jakarta.validation.Valid;
