@@ -1,4 +1,4 @@
-package com.aitech.strongBody.useCase.exercise;
+package com.aitech.strongBody.application.useCase.exercise;
 
 import com.aitech.strongBody.infra.database.ExerciseRepository;
 import com.aitech.strongBody.infra.database.model.ExerciseDocument;

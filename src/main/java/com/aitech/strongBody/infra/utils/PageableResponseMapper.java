@@ -1,4 +1,4 @@
-package com.aitech.strongBody.utils;
+package com.aitech.strongBody.infra.utils;
 
 import org.springframework.data.domain.Page;
 

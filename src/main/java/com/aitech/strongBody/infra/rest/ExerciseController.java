@@ -1,10 +1,11 @@
-package com.aitech.strongBody.controller;
+package com.aitech.strongBody.infra.rest;
 
-import com.aitech.strongBody.dto.exercise.CreateExerciseDto;
-import com.aitech.strongBody.dto.exercise.UpdateExerciseDto;
+import com.aitech.strongBody.application.useCase.exercise.*;
 import com.aitech.strongBody.infra.database.model.ExerciseDocument;
-import com.aitech.strongBody.useCase.exercise.*;
-import com.aitech.strongBody.utils.PageableResponseMapper;
+import com.aitech.strongBody.infra.rest.dto.exercise.CreateExerciseDto;
+import com.aitech.strongBody.infra.rest.dto.exercise.UpdateExerciseDto;
+import com.aitech.strongBody.infra.utils.PageableResponseMapper;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

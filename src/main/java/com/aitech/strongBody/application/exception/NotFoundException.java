@@ -1,4 +1,4 @@
-package com.aitech.strongBody.exception;
+package com.aitech.strongBody.application.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

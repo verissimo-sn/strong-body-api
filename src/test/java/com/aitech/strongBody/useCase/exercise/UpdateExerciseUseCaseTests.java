@@ -15,10 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.aitech.strongBody.dto.exercise.UpdateExerciseDto;
-import com.aitech.strongBody.exception.NotFoundException;
+import com.aitech.strongBody.application.exception.NotFoundException;
+import com.aitech.strongBody.application.useCase.exercise.UpdateExerciseUseCase;
 import com.aitech.strongBody.infra.database.ExerciseRepository;
 import com.aitech.strongBody.infra.database.model.ExerciseDocument;
+import com.aitech.strongBody.infra.rest.dto.exercise.UpdateExerciseDto;
 
 @Tag("Unit")
 @SpringBootTest

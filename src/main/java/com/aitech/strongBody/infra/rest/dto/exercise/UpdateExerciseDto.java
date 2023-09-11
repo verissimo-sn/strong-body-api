@@ -1,18 +1,17 @@
-package com.aitech.strongBody.dto.exercise;
+package com.aitech.strongBody.infra.rest.dto.exercise;
 
 import com.mongodb.lang.Nullable;
-import jakarta.validation.constraints.NotBlank;
 
-public record CreateExerciseDto(
-        @NotBlank
+public record UpdateExerciseDto(
+        @Nullable
         String name,
-        @NotBlank
+        @Nullable
         String description,
-        @NotBlank
+        @Nullable
         String level,
-        @NotBlank
+        @Nullable
         String type,
-        @NotBlank
+        @Nullable
         String equipment,
         @Nullable
         String imageUrl,

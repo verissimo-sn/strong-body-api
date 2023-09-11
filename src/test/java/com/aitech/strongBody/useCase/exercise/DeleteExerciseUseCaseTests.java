@@ -1,6 +1,7 @@
 package com.aitech.strongBody.useCase.exercise;
 
-import com.aitech.strongBody.exception.NotFoundException;
+import com.aitech.strongBody.application.exception.NotFoundException;
+import com.aitech.strongBody.application.useCase.exercise.DeleteExerciseUseCase;
 import com.aitech.strongBody.infra.database.ExerciseRepository;
 import com.aitech.strongBody.infra.database.model.ExerciseDocument;
 

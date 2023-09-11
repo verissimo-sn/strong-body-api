@@ -1,8 +1,8 @@
-package com.aitech.strongBody.useCase.exercise;
+package com.aitech.strongBody.application.useCase.exercise;
 
 import com.aitech.strongBody.infra.database.ExerciseRepository;
 import com.aitech.strongBody.infra.database.model.ExerciseDocument;
-import com.aitech.strongBody.dto.exercise.CreateExerciseDto;
+import com.aitech.strongBody.infra.rest.dto.exercise.CreateExerciseDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
