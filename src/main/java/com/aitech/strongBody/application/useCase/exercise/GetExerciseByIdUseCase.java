@@ -1,19 +1,23 @@
 package com.aitech.strongBody.application.useCase.exercise;
 
-import com.aitech.strongBody.application.exception.NotFoundException;
-import com.aitech.strongBody.infra.database.ExerciseRepository;
-import com.aitech.strongBody.infra.database.model.ExerciseDocument;
+import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.aitech.strongBody.application.exception.NotFoundException;
+import com.aitech.strongBody.domain.entity.Exercise;
+import com.aitech.strongBody.domain.repository.ExerciseRepository;
 
 @Service
 public class GetExerciseByIdUseCase {
-    @Autowired
-    private ExerciseRepository exerciseRepository;
+    private final ExerciseRepository repository;
 
-    public ExerciseDocument execute(String id) {
-        var foundExercise = this.exerciseRepository.findById(id);
+    public GetExerciseByIdUseCase(ExerciseRepository exerciseRepository) {
+        this.repository = exerciseRepository;
+    }
+
+    public Exercise execute(UUID id) {
+        var foundExercise = this.repository.getById(id);
         if (foundExercise.isEmpty()) {
             throw new NotFoundException("Exercise not found");
         }

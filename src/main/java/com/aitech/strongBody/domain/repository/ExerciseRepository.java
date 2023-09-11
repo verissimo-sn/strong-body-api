@@ -13,5 +13,5 @@ public interface ExerciseRepository {
   Optional<Exercise> getById(UUID id);
   Page<Exercise> getAll(Pageable pageable);
   void update(Exercise exercise);
-  void delete(UUID id);
+  void deleteById(UUID id);
 }

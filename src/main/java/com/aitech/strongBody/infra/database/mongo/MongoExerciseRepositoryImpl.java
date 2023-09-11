@@ -42,7 +42,7 @@ public class MongoExerciseRepositoryImpl implements ExerciseRepository {
   }
 
   @Override
-  public void delete(UUID id) {
+  public void deleteById(UUID id) {
     this.repository.deleteById(id);
   }
 

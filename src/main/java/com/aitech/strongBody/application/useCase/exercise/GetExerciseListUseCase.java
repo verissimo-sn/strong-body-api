@@ -1,19 +1,21 @@
 package com.aitech.strongBody.application.useCase.exercise;
 
-import com.aitech.strongBody.infra.database.ExerciseRepository;
-import com.aitech.strongBody.infra.database.model.ExerciseDocument;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.aitech.strongBody.domain.entity.Exercise;
+import com.aitech.strongBody.domain.repository.ExerciseRepository;
+
 @Service
 public class GetExerciseListUseCase {
-    @Autowired
-    private ExerciseRepository exerciseRepository;
+    private final ExerciseRepository repository;
 
-    public Page<ExerciseDocument> execute(Pageable pageable) {
-        return this.exerciseRepository.findAll(pageable);
+    public GetExerciseListUseCase(ExerciseRepository exerciseRepository) {
+        this.repository = exerciseRepository;
+    }
+
+    public Page<Exercise> execute(Pageable pageable) {
+        return this.repository.getAll(pageable);
     }
 }

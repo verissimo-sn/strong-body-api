@@ -1,41 +1,42 @@
 package com.aitech.strongBody.application.useCase.exercise;
 
 import com.aitech.strongBody.application.exception.NotFoundException;
-import com.aitech.strongBody.infra.database.ExerciseRepository;
-import com.aitech.strongBody.infra.database.model.ExerciseDocument;
+import com.aitech.strongBody.domain.entity.Exercise;
+import com.aitech.strongBody.domain.repository.ExerciseRepository;
 import com.aitech.strongBody.infra.rest.dto.exercise.UpdateExerciseDto;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class UpdateExerciseUseCase {
+    private final ExerciseRepository repository;
 
-    @Autowired
-    private ExerciseRepository exerciseRepository;
-
-    public void execute(UpdateExerciseDto input, String id) {
-        var exercise = this.getExerciseById(id);
-        this.exerciseRepository.save(this.toUpdatedDocument(input, exercise));
+    public UpdateExerciseUseCase(ExerciseRepository exerciseRepository) {
+        this.repository = exerciseRepository;
     }
 
-    private ExerciseDocument getExerciseById(String id) {
-        var foundExercise = this.exerciseRepository.findById(id);
+    public void execute(UpdateExerciseDto input, UUID id) {
+        this.getExerciseById(id);
+        var updatedExercise = Exercise.builder()
+            .id(id)
+            .name(input.name())
+            .description(input.description())
+            .level(input.level())
+            .type(input.type())
+            .equipment(input.equipment())
+            .imageUrl(input.imageUrl())
+            .videoUrl(input.videoUrl())
+            .build();
+        this.repository.update(updatedExercise);
+    }
+
+    private Exercise getExerciseById(UUID id) {
+        var foundExercise = this.repository.getById(id);
         if (foundExercise.isEmpty()) {
             throw new NotFoundException("Exercise not found");
         }
         return foundExercise.get();
-    }
-
-    private ExerciseDocument toUpdatedDocument(UpdateExerciseDto dto, ExerciseDocument exercise) {
-        System.out.println(dto.toString());
-        exercise.setName(dto.name() == null ? exercise.getName() : dto.name());
-        exercise.setDescription(dto.description() == null ? exercise.getDescription() : dto.description());
-        exercise.setLevel(dto.level() == null ? exercise.getLevel() : dto.level());
-        exercise.setType(dto.type() == null ? exercise.getType() : dto.type());
-        exercise.setEquipment(dto.equipment() == null ? exercise.getEquipment() : dto.equipment());
-        exercise.setImageUrl(dto.imageUrl() == null ? exercise.getImageUrl() : dto.imageUrl());
-        exercise.setVideoUrl(dto.videoUrl() == null ? exercise.getVideoUrl() : dto.videoUrl());
-        return exercise;
     }
 }
