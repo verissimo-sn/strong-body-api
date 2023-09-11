@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.domain.repository.ExerciseRepository;
-import com.aitech.strongBody.infra.database.model.ExerciseDocument;
+import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
 
 public class MongoExerciseRepositoryImpl implements ExerciseRepository {
   private final MongoExerciseRepository repository;

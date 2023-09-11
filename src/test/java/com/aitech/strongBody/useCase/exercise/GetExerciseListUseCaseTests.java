@@ -2,7 +2,7 @@ package com.aitech.strongBody.useCase.exercise;
 
 import com.aitech.strongBody.application.useCase.exercise.GetExerciseListUseCase;
 import com.aitech.strongBody.infra.database.ExerciseRepository;
-import com.aitech.strongBody.infra.database.model.ExerciseDocument;
+import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

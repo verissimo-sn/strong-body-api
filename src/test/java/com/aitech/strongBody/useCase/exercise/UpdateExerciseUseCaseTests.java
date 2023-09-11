@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.aitech.strongBody.application.exception.NotFoundException;
 import com.aitech.strongBody.application.useCase.exercise.UpdateExerciseUseCase;
 import com.aitech.strongBody.infra.database.ExerciseRepository;
-import com.aitech.strongBody.infra.database.model.ExerciseDocument;
+import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
 import com.aitech.strongBody.infra.rest.dto.exercise.UpdateExerciseDto;
 
 @Tag("Unit")

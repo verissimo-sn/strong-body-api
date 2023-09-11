@@ -2,8 +2,9 @@ package com.aitech.strongBody.useCase.exercise;
 
 import com.aitech.strongBody.application.exception.NotFoundException;
 import com.aitech.strongBody.application.useCase.exercise.DeleteExerciseUseCase;
-import com.aitech.strongBody.infra.database.ExerciseRepository;
-import com.aitech.strongBody.infra.database.model.ExerciseDocument;
+import com.aitech.strongBody.domain.entity.Exercise;
+import com.aitech.strongBody.domain.repository.ExerciseRepository;
+import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -23,7 +25,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @DisplayName("DeleteExerciseUseCase")
 public class DeleteExerciseUseCaseTests {
-    private final String EXERCISE_ID = "validId";
+    private final UUID EXERCISE_ID = UUID.randomUUID();
 
     @InjectMocks
     private DeleteExerciseUseCase deleteExerciseUseCase;
@@ -33,9 +35,9 @@ public class DeleteExerciseUseCaseTests {
 
     @BeforeEach
     void buildSetUp() {
-        var fakeExercise = new ExerciseDocument();
+        var fakeExercise = new Exercise();
         fakeExercise.setId(EXERCISE_ID);
-        when(this.exerciseRepository.findById(EXERCISE_ID)).thenReturn(Optional.of(fakeExercise));
+        when(this.exerciseRepository.getById(EXERCISE_ID)).thenReturn(Optional.of(fakeExercise));
     }
 
     @Test

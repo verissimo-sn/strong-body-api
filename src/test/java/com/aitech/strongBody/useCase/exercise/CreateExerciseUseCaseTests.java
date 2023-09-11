@@ -12,16 +12,17 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.aitech.strongBody.application.useCase.exercise.CreateExerciseUseCase;
-import com.aitech.strongBody.infra.database.ExerciseRepository;
-import com.aitech.strongBody.infra.database.model.ExerciseDocument;
+import com.aitech.strongBody.domain.entity.Exercise;
+import com.aitech.strongBody.domain.repository.ExerciseRepository;
+import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
 import com.aitech.strongBody.infra.rest.dto.exercise.CreateExerciseDto;
 
 @Tag("Unit")
 @SpringBootTest
 @DisplayName("CreateExerciseUseCase")
 public class CreateExerciseUseCaseTests {
-    CreateExerciseDto fakeExerciseInputDto;
-    ExerciseDocument expectedExerciseOutput;
+    CreateExerciseDto exerciseInputDto;
+    Exercise expectedExerciseOutput;
 
     @InjectMocks
     private CreateExerciseUseCase createExerciseUseCase;
@@ -31,7 +32,7 @@ public class CreateExerciseUseCaseTests {
 
     @BeforeEach
     void buildSetUp() {
-        this.fakeExerciseInputDto = new CreateExerciseDto(
+        this.exerciseInputDto = new CreateExerciseDto(
                 "name",
                 "description",
                 "level",
@@ -40,22 +41,22 @@ public class CreateExerciseUseCaseTests {
                 "imageUrl",
                 "videoUrl"
         );
-        this.expectedExerciseOutput = new ExerciseDocument();
-        this.expectedExerciseOutput.setName(this.fakeExerciseInputDto.name());
-        this.expectedExerciseOutput.setDescription(this.fakeExerciseInputDto.description());
-        this.expectedExerciseOutput.setLevel(this.fakeExerciseInputDto.level());
-        this.expectedExerciseOutput.setType(this.fakeExerciseInputDto.type());
-        this.expectedExerciseOutput.setEquipment(this.fakeExerciseInputDto.equipment());
-        this.expectedExerciseOutput.setImageUrl(this.fakeExerciseInputDto.imageUrl());
-        this.expectedExerciseOutput.setVideoUrl(this.fakeExerciseInputDto.videoUrl());
-        
-        when(this.exerciseRepository.insert(this.expectedExerciseOutput)).thenReturn(null);
+        this.expectedExerciseOutput = Exercise.builder()
+                .name(this.exerciseInputDto.name())
+                .description(this.exerciseInputDto.description())
+                .level(this.exerciseInputDto.level())
+                .type(this.exerciseInputDto.type())
+                .equipment(this.exerciseInputDto.equipment())
+                .imageUrl(this.exerciseInputDto.imageUrl())
+                .videoUrl(this.exerciseInputDto.videoUrl())
+                .build();
+        when(this.exerciseRepository.create(this.expectedExerciseOutput)).thenReturn(null);
     }
 
     @Test
     @DisplayName("Should create exercise with correct params")
     void shouldCreateAnExercise() {
         this.createExerciseUseCase.execute(this.fakeExerciseInputDto);
-        verify(this.exerciseRepository).insert(this.expectedExerciseOutput);
+        verify(this.exerciseRepository).create(this.expectedExerciseOutput);
     }
 }

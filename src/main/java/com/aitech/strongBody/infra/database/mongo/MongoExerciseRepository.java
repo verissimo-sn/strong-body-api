@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.aitech.strongBody.infra.database.model.ExerciseDocument;
+import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
 
 public interface MongoExerciseRepository extends MongoRepository<ExerciseDocument, UUID> {
   
