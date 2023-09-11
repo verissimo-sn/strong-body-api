@@ -1,12 +1,12 @@
 package com.aitech.strongBody.application.useCase.exercise;
 
-import com.aitech.strongBody.application.exception.NotFoundException;
-import com.aitech.strongBody.domain.entity.Exercise;
-import com.aitech.strongBody.domain.repository.ExerciseRepository;
-
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+
+import com.aitech.strongBody.application.exception.NotFoundException;
+import com.aitech.strongBody.domain.entity.Exercise;
+import com.aitech.strongBody.domain.repository.ExerciseRepository;
 
 @Service
 public class UpdateExerciseUseCase {
@@ -19,14 +19,13 @@ public class UpdateExerciseUseCase {
     public void execute(Exercise input) {
         var exercise = this.getExerciseById(input.getId());
         exercise.update(
-            input.getName(),
-            input.getDescription(),
-            input.getLevel(),
-            input.getType(),
-            input.getEquipment(),
-            input.getImageUrl(),
-            input.getVideoUrl()
-        );
+                input.getName(),
+                input.getDescription(),
+                input.getLevel(),
+                input.getType(),
+                input.getEquipment(),
+                input.getImageUrl(),
+                input.getVideoUrl());
         this.repository.update(exercise);
     }
 

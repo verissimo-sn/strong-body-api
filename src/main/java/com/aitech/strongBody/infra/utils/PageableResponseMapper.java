@@ -1,9 +1,9 @@
 package com.aitech.strongBody.infra.utils;
 
-import org.springframework.data.domain.Page;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.data.domain.Page;
 
 public abstract class PageableResponseMapper {
     public static <T> Map<String, Object> toPagination(Page<T> pageable) {

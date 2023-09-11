@@ -1,11 +1,11 @@
 package com.aitech.strongBody.application.useCase.exercise;
 
-import com.aitech.strongBody.application.exception.NotFoundException;
-import com.aitech.strongBody.domain.repository.ExerciseRepository;
-
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+
+import com.aitech.strongBody.application.exception.NotFoundException;
+import com.aitech.strongBody.domain.repository.ExerciseRepository;
 
 @Service
 public class DeleteExerciseUseCase {

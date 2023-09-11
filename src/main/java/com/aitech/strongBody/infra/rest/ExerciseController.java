@@ -44,8 +44,7 @@ public class ExerciseController {
 
     @GetMapping
     public ResponseEntity<?> getExerciseList(
-            @PageableDefault(page = 0, size = 10) Pageable pageable
-    ) {
+            @PageableDefault(page = 0, size = 10) Pageable pageable) {
         var exercises = this.getExercisesUseCase.execute(pageable);
         var response = PageableResponseMapper.toPagination(exercises);
         return ResponseEntity.ok(response);
@@ -53,8 +52,7 @@ public class ExerciseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Exercise> getExerciseById(
-            @PathVariable(value="id") @Valid UUID id
-    ) {
+            @PathVariable(value = "id") @Valid UUID id) {
         var foundExercise = this.getExerciseByIdUseCase.execute(id);
         return ResponseEntity.status(HttpStatus.OK).body(foundExercise);
     }
@@ -62,14 +60,13 @@ public class ExerciseController {
     @PostMapping
     public ResponseEntity<?> createExercise(@RequestBody @Valid CreateExerciseDto input) {
         Exercise exercise = new Exercise(
-            input.name(),
-            input.description(),
-            input.level(),
-            input.type(),
-            input.equipment(),
-            input.imageUrl(),
-            input.videoUrl()
-        );
+                input.name(),
+                input.description(),
+                input.level(),
+                input.type(),
+                input.equipment(),
+                input.imageUrl(),
+                input.videoUrl());
         this.createExerciseUseCase.execute(exercise);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -77,8 +74,7 @@ public class ExerciseController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateExercise(
             @RequestBody @Valid UpdateExerciseDto input,
-            @PathVariable(value="id") UUID id
-    ) {
+            @PathVariable(value = "id") UUID id) {
         Exercise exercise = Exercise.builder()
                 .id(id)
                 .name(input.name())
@@ -95,8 +91,7 @@ public class ExerciseController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteExercise(
-            @PathVariable(value="id") UUID id
-    ) {
+            @PathVariable(value = "id") UUID id) {
         this.deleteExerciseUseCase.execute(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
