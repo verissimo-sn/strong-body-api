@@ -20,7 +20,7 @@ public class Exercise extends BaseEntity {
     private String imageUrl;
     private String videoUrl;
 
-    public Exercise update(
+    public void update(
             final String name,
             final String description,
             final String level,
@@ -35,6 +35,5 @@ public class Exercise extends BaseEntity {
         this.setEquipment(equipment == null ? this.equipment : equipment);
         this.setImageUrl(imageUrl == null ? this.imageUrl : imageUrl);
         this.setVideoUrl(videoUrl == null ? this.videoUrl : videoUrl);
-        return this;
     }
 }

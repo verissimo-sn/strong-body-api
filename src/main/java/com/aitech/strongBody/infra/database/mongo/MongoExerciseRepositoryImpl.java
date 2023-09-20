@@ -1,24 +1,21 @@
 package com.aitech.strongBody.infra.database.mongo;
 
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.aitech.strongBody.domain.entity.Exercise;
+import com.aitech.strongBody.domain.repository.ExerciseRepository;
+import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import com.aitech.strongBody.domain.entity.Exercise;
-import com.aitech.strongBody.domain.repository.ExerciseRepository;
-import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @Primary
 public class MongoExerciseRepositoryImpl implements ExerciseRepository {
     private final SpringDataMongoExerciseRepository repository;
 
-    @Autowired
     public MongoExerciseRepositoryImpl(SpringDataMongoExerciseRepository repository) {
         this.repository = repository;
     }
@@ -31,10 +28,7 @@ public class MongoExerciseRepositoryImpl implements ExerciseRepository {
     @Override
     public Optional<Exercise> getById(UUID id) {
         var foundExercise = this.repository.findById(id);
-        if (foundExercise.isPresent()) {
-            return Optional.of(this.fromDocumentToEntity(foundExercise.get()));
-        }
-        return Optional.empty();
+        return foundExercise.map(this::fromDocumentToEntity);
     }
 
     @Override
@@ -53,7 +47,7 @@ public class MongoExerciseRepositoryImpl implements ExerciseRepository {
     }
 
     private Exercise fromDocumentToEntity(ExerciseDocument document) {
-        Exercise exerciseEntity = Exercise
+        return Exercise
                 .builder()
                 .id(document.getId())
                 .name(document.getName())
@@ -64,7 +58,6 @@ public class MongoExerciseRepositoryImpl implements ExerciseRepository {
                 .imageUrl(document.getImageUrl())
                 .videoUrl(document.getVideoUrl())
                 .build();
-        return exerciseEntity;
     }
 
     private ExerciseDocument fromEntityToDocument(Exercise entity) {
