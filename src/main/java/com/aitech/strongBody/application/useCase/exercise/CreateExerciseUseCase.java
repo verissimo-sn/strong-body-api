@@ -1,9 +1,8 @@
 package com.aitech.strongBody.application.useCase.exercise;
 
-import org.springframework.stereotype.Service;
-
 import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.domain.repository.ExerciseRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CreateExerciseUseCase {

@@ -1,10 +1,8 @@
-package com.aitech.strongBody.useCase.exercise;
+package com.aitech.strongBody.application.useCase.exercise;
 
 import com.aitech.strongBody.application.exception.NotFoundException;
-import com.aitech.strongBody.application.useCase.exercise.GetExerciseByIdUseCase;
-import com.aitech.strongBody.infra.database.ExerciseRepository;
-import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
-
+import com.aitech.strongBody.domain.entity.Exercise;
+import com.aitech.strongBody.domain.repository.ExerciseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -14,15 +12,16 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @Tag("Unit")
 @SpringBootTest
-@DisplayName("getExerciseByIdUseCass")
+@DisplayName("[UseCase] GetExerciseByIdUseCase")
 public class GetExerciseByIdUseCaseTests {
-    private final String EXERCISE_ID = "validId";
+    private final UUID EXERCISE_ID = UUID.randomUUID();
 
     @InjectMocks
     private GetExerciseByIdUseCase getExerciseByIdUseCase;
@@ -32,26 +31,26 @@ public class GetExerciseByIdUseCaseTests {
 
     @BeforeEach
     void buildSetUp() {
-        var fakeExercise = new ExerciseDocument();
-        fakeExercise.setId(EXERCISE_ID);
-       when(this.exerciseRepository.findById(EXERCISE_ID)).thenReturn(Optional.of(fakeExercise));
+        var fakeExercise = Exercise.builder().id(EXERCISE_ID).build();
+       when(this.exerciseRepository.getById(EXERCISE_ID)).thenReturn(Optional.of(fakeExercise));
     }
 
     @Test
     @DisplayName("Should find exercise by id and return it")
-    void shouldFindExerciseById() {
+    void findExerciseById() {
         var exercise = this.getExerciseByIdUseCase.execute(EXERCISE_ID);
 
         assertEquals(EXERCISE_ID, exercise.getId());
-        assertInstanceOf(ExerciseDocument.class, exercise);
+        assertInstanceOf(Exercise.class, exercise);
     }
 
     @Test
     @DisplayName("Should throw exception when exercise not found")
-    void shouldThrowExceptionWhenExerciseNotFound() {
-        when(this.exerciseRepository.findById(EXERCISE_ID)).thenReturn(Optional.empty());
+    void throwExceptionWhenExerciseNotFound() {
+        when(this.exerciseRepository.getById(EXERCISE_ID)).thenReturn(Optional.empty());
+        var anyId = UUID.randomUUID();
         var exception = assertThrows(NotFoundException.class, () -> {
-            this.getExerciseByIdUseCase.execute("anyId");
+            this.getExerciseByIdUseCase.execute(anyId);
         });
 
         assertEquals("Exercise not found", exception.getMessage());

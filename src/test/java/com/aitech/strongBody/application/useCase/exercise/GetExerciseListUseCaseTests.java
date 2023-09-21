@@ -1,9 +1,7 @@
-package com.aitech.strongBody.useCase.exercise;
+package com.aitech.strongBody.application.useCase.exercise;
 
-import com.aitech.strongBody.application.useCase.exercise.GetExerciseListUseCase;
-import com.aitech.strongBody.infra.database.ExerciseRepository;
-import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
-
+import com.aitech.strongBody.domain.entity.Exercise;
+import com.aitech.strongBody.domain.repository.ExerciseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -23,10 +21,10 @@ import static org.mockito.Mockito.when;
 
 @Tag("Unit")
 @SpringBootTest
-@DisplayName("getExerciseListUseCase")
+@DisplayName("[UseCase] GetExerciseListUseCase")
 public class GetExerciseListUseCaseTests {
     final Pageable pageInput = Pageable.ofSize(1).withPage(0);
-    final Page<ExerciseDocument> fakeExercisePage =  new PageImpl<>(List.of(new ExerciseDocument()));
+    final Page<Exercise> fakeExercisePage =  new PageImpl<>(List.of(new Exercise()));
 
     @InjectMocks
     private GetExerciseListUseCase getExerciseListUseCase;
@@ -36,16 +34,16 @@ public class GetExerciseListUseCaseTests {
 
     @BeforeEach
     void buildSetUp() {
-       when(this.exerciseRepository.findAll(pageInput)).thenReturn(fakeExercisePage);
+       when(this.exerciseRepository.getAll(pageInput)).thenReturn(this.fakeExercisePage);
     }
 
     @Test
     @DisplayName("Should find and paginate exercises")
-    void shouldFindExercise() {
+    void findExercise() {
         var exercise = this.getExerciseListUseCase.execute(pageInput);
         var content = exercise.getContent();
         assertInstanceOf(Page.class, exercise);
-        assertInstanceOf(ExerciseDocument.class, content.get(0));
+        assertInstanceOf(Exercise.class, content.get(0));
         assertEquals(1, exercise.getTotalElements());
     }
 }
