@@ -1,9 +1,6 @@
 package com.aitech.strongBody.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
@@ -11,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
+@ToString
 public class Exercise extends BaseEntity {
     private String name;
     private String description;

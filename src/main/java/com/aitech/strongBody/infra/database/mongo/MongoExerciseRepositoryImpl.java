@@ -3,6 +3,8 @@ package com.aitech.strongBody.infra.database.mongo;
 import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.domain.repository.ExerciseRepository;
 import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,7 @@ import java.util.UUID;
 @Component
 @Primary
 public class MongoExerciseRepositoryImpl implements ExerciseRepository {
+    private static final Logger logger = LoggerFactory.getLogger(MongoExerciseRepositoryImpl.class);
     private final SpringDataMongoExerciseRepository repository;
 
     public MongoExerciseRepositoryImpl(SpringDataMongoExerciseRepository repository) {
@@ -22,27 +25,37 @@ public class MongoExerciseRepositoryImpl implements ExerciseRepository {
 
     @Override
     public void create(Exercise exercise) {
+        logger.info("create::Exercise: {}", exercise.toString());
         this.repository.save(this.fromEntityToDocument(exercise));
     }
 
     @Override
     public Optional<Exercise> getById(UUID id) {
         var foundExercise = this.repository.findById(id);
+        logger.info("getById::Id: {}::Exercise: {}", id, foundExercise.toString());
         return foundExercise.map(this::fromDocumentToEntity);
     }
 
     @Override
     public Page<Exercise> getAll(Pageable pageable) {
-        return this.repository.findAll(pageable).map(this::fromDocumentToEntity);
+        var exerciseList = this.repository.findAll(pageable).map(this::fromDocumentToEntity);
+        logger.info("getAll::exerciseList: {}", exerciseList
+                .getContent()
+                .stream()
+                .map(Exercise::getId)
+                .toList());
+        return exerciseList;
     }
 
     @Override
     public void update(Exercise exercise) {
+        logger.info("update::Exercise: {}", exercise.toString());
         this.repository.save(this.fromEntityToDocument(exercise));
     }
 
     @Override
     public void deleteById(UUID id) {
+        logger.info("deleteById::Id: {}", id);
         this.repository.deleteById(id);
     }
 

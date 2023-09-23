@@ -1,36 +1,26 @@
 package com.aitech.strongBody.infra.rest;
 
-import java.util.UUID;
-
+import com.aitech.strongBody.application.useCase.exercise.*;
+import com.aitech.strongBody.domain.entity.Exercise;
+import com.aitech.strongBody.infra.rest.dto.exercise.CreateExerciseDto;
+import com.aitech.strongBody.infra.rest.dto.exercise.UpdateExerciseDto;
+import com.aitech.strongBody.infra.utils.PageableResponseMapper;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.aitech.strongBody.application.useCase.exercise.CreateExerciseUseCase;
-import com.aitech.strongBody.application.useCase.exercise.DeleteExerciseUseCase;
-import com.aitech.strongBody.application.useCase.exercise.GetExerciseByIdUseCase;
-import com.aitech.strongBody.application.useCase.exercise.GetExerciseListUseCase;
-import com.aitech.strongBody.application.useCase.exercise.UpdateExerciseUseCase;
-import com.aitech.strongBody.domain.entity.Exercise;
-import com.aitech.strongBody.infra.rest.dto.exercise.CreateExerciseDto;
-import com.aitech.strongBody.infra.rest.dto.exercise.UpdateExerciseDto;
-import com.aitech.strongBody.infra.utils.PageableResponseMapper;
-
-import jakarta.validation.Valid;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/exercises")
 public class ExerciseController {
+    private static final Logger logger = LoggerFactory.getLogger(ExerciseController.class);
     @Autowired
     GetExerciseListUseCase getExercisesUseCase;
     @Autowired
@@ -47,6 +37,7 @@ public class ExerciseController {
             @PageableDefault(page = 0, size = 10) Pageable pageable) {
         var exercises = this.getExercisesUseCase.execute(pageable);
         var response = PageableResponseMapper.toPagination(exercises);
+        logger.info("getExerciseList::ExerciseList: {}", response.get("totalItems"));
         return ResponseEntity.ok(response);
     }
 
@@ -54,6 +45,7 @@ public class ExerciseController {
     public ResponseEntity<Exercise> getExerciseById(
             @PathVariable(value = "id") @Valid UUID id) {
         var foundExercise = this.getExerciseByIdUseCase.execute(id);
+        logger.info("getExerciseById::Id: {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(foundExercise);
     }
 
@@ -68,6 +60,7 @@ public class ExerciseController {
                 input.imageUrl(),
                 input.videoUrl());
         this.createExerciseUseCase.execute(exercise);
+        logger.info("createExercise::Exercise: {}", exercise.toString());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -86,6 +79,7 @@ public class ExerciseController {
                 .videoUrl(input.videoUrl())
                 .build();
         this.updateExerciseUseCase.execute(exercise);
+        logger.info("updateExercise::Exercise{}", exercise.toString());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -93,6 +87,7 @@ public class ExerciseController {
     public ResponseEntity<?> deleteExercise(
             @PathVariable(value = "id") UUID id) {
         this.deleteExerciseUseCase.execute(id);
+        logger.info("deleteExercise::Id: {}", id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
