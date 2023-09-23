@@ -5,6 +5,7 @@ import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.infra.rest.dto.exercise.CreateExerciseDto;
 import com.aitech.strongBody.infra.rest.dto.exercise.UpdateExerciseDto;
 import com.aitech.strongBody.infra.utils.PageableResponseMapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/exercises")
+@Tag(name = "Exercise", description = "Exercise API")
 public class ExerciseController {
     private static final Logger logger = LoggerFactory.getLogger(ExerciseController.class);
     @Autowired
