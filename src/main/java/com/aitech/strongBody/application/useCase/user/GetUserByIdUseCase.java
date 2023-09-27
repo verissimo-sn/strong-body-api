@@ -25,7 +25,7 @@ public class GetUserByIdUseCase {
             throw new NotFoundException("User not found");
         }
         var user = foundUser.get();
-        logger.info("execute::Exercise: {}::", user.toString());
+        logger.info("execute::User: {}::", user.toString());
         return user;
     }
 }

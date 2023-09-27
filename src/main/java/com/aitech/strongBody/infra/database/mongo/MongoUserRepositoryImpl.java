@@ -6,8 +6,6 @@ import com.aitech.strongBody.infra.database.mongo.model.UserDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -31,11 +29,17 @@ public class MongoUserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> getById(UUID id) {
-        var foundExercise = this.repository.findById(id);
-        logger.info("getById::Id: {}::User: {}", id, foundExercise.toString());
-        return foundExercise.map(this::fromDocumentToEntity);
+        var foundUser = this.repository.findById(id);
+        logger.info("getById::Id: {}::User: {}", id, foundUser.toString());
+        return foundUser.map(this::fromDocumentToEntity);
     }
 
+    @Override
+    public Optional<User> getByEmail(String email) {
+        var foundEmail = this.repository.findByEmail(email);
+        logger.info("getByEmail::Email: {}", email);
+        return foundEmail.map(this::fromDocumentToEntity);
+    }
 
     @Override
     public void update(User user) {
