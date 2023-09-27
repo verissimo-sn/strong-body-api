@@ -10,12 +10,8 @@ import com.aitech.strongBody.domain.entity.Exercise;
 
 public interface ExerciseRepository {
     void create(Exercise exercise);
-
     Optional<Exercise> getById(UUID id);
-
     Page<Exercise> getAll(Pageable pageable);
-
     void update(Exercise exercise);
-
     void deleteById(UUID id);
 }

@@ -36,16 +36,6 @@ public class MongoUserRepositoryImpl implements UserRepository {
         return foundExercise.map(this::fromDocumentToEntity);
     }
 
-    @Override
-    public Page<User> getAll(Pageable pageable) {
-        var exerciseList = this.repository.findAll(pageable).map(this::fromDocumentToEntity);
-        logger.info("getAll::userList: {}", exerciseList
-                .getContent()
-                .stream()
-                .map(User::getId)
-                .toList());
-        return exerciseList;
-    }
 
     @Override
     public void update(User user) {
@@ -53,11 +43,6 @@ public class MongoUserRepositoryImpl implements UserRepository {
         this.repository.save(this.fromEntityToDocument(user));
     }
 
-    @Override
-    public void deleteById(UUID id) {
-        logger.info("deleteById::Id: {}", id);
-        this.repository.deleteById(id);
-    }
 
     private User fromDocumentToEntity(UserDocument document) {
         return User

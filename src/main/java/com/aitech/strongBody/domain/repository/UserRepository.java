@@ -9,12 +9,6 @@ import java.util.UUID;
 
 public interface UserRepository {
     void create(User user);
-
     Optional<User> getById(UUID id);
-
-    Page<User> getAll(Pageable pageable);
-
     void update(User user);
-
-    void deleteById(UUID id);
 }
