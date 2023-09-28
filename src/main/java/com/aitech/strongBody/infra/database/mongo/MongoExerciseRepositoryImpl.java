@@ -59,6 +59,11 @@ public class MongoExerciseRepositoryImpl implements ExerciseRepository {
         this.repository.deleteById(id);
     }
 
+    @Override
+    public void deleteAll() {
+        this.repository.deleteAll();
+    }
+
     private Exercise fromDocumentToEntity(ExerciseDocument document) {
         return Exercise
                 .builder()

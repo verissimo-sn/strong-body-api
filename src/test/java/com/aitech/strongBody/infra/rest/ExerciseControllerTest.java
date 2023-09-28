@@ -52,7 +52,7 @@ public class ExerciseControllerTest {
 
     @AfterEach
     void afterEach() {
-        this.exerciseRepository.deleteById(this.exercise.getId());
+        this.exerciseRepository.deleteAll();
     }
 
     @Test

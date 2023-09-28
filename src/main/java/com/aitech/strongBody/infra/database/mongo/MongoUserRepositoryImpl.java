@@ -42,6 +42,11 @@ public class MongoUserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public void deleteAll() {
+        this.repository.deleteAll();
+    }
+
+    @Override
     public void update(User user) {
         logger.info("update::User: {}", user.toString());
         this.repository.save(this.fromEntityToDocument(user));

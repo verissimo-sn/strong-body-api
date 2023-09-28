@@ -10,32 +10,37 @@ import java.util.UUID;
 
 @Component
 public class H2UserRepositoryImpl implements UserRepository {
-    private final SpringDataH2UserRepository springDataH2UserRepository;
+    private final SpringDataH2UserRepository repository;
 
     public H2UserRepositoryImpl(SpringDataH2UserRepository springDataH2ExerciseRepository) {
-        this.springDataH2UserRepository = springDataH2ExerciseRepository;
+        this.repository = springDataH2ExerciseRepository;
     }
 
     @Override
     public void create(User user) {
-        this.springDataH2UserRepository.save(toH2Entity(user));
+        this.repository.save(toH2Entity(user));
     }
 
     @Override
     public Optional<User> getById(UUID id) {
-        var foundUser = this.springDataH2UserRepository.findById(id);
+        var foundUser = this.repository.findById(id);
         return foundUser.map(this::toEntity);
     }
 
     @Override
     public void update(User user) {
-        this.springDataH2UserRepository.save(toH2Entity(user));
+        this.repository.save(toH2Entity(user));
     }
 
     @Override
     public Optional<User> getByEmail(String email) {
-        var foundUser = this.springDataH2UserRepository.findByEmail(email);
+        var foundUser = this.repository.findByEmail(email);
         return foundUser.map(this::toEntity);
+    }
+
+    @Override
+    public void deleteAll() {
+        this.repository.deleteAll();
     }
 
     private User toEntity(UserH2 user) {

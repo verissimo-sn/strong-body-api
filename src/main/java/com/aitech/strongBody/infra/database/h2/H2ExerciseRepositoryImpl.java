@@ -12,36 +12,41 @@ import java.util.UUID;
 
 @Component
 public class H2ExerciseRepositoryImpl implements ExerciseRepository {
-    private final SpringDataH2ExerciseRepository springDataH2ExerciseRepository;
+    private final SpringDataH2ExerciseRepository repository;
 
     public H2ExerciseRepositoryImpl(SpringDataH2ExerciseRepository springDataH2ExerciseRepository) {
-        this.springDataH2ExerciseRepository = springDataH2ExerciseRepository;
+        this.repository = springDataH2ExerciseRepository;
     }
 
     @Override
     public void create(Exercise exercise) {
-        this.springDataH2ExerciseRepository.save(toH2Entity(exercise));
+        this.repository.save(toH2Entity(exercise));
     }
 
     @Override
     public Optional<Exercise> getById(UUID id) {
-        var foundExercise = this.springDataH2ExerciseRepository.findById(id);
+        var foundExercise = this.repository.findById(id);
         return foundExercise.map(this::toEntity);
     }
 
     @Override
     public Page<Exercise> getAll(Pageable pageable) {
-        return this.springDataH2ExerciseRepository.findAll(pageable).map(this::toEntity);
+        return this.repository.findAll(pageable).map(this::toEntity);
     }
 
     @Override
     public void update(Exercise exercise) {
-        this.springDataH2ExerciseRepository.save(toH2Entity(exercise));
+        this.repository.save(toH2Entity(exercise));
     }
 
     @Override
     public void deleteById(UUID id) {
-        this.springDataH2ExerciseRepository.deleteById(id);
+        this.repository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        this.repository.deleteAll();
     }
 
     private Exercise toEntity(ExerciseH2 exercise) {
