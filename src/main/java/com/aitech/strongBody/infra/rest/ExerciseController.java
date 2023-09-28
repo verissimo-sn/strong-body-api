@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -35,24 +35,27 @@ public class ExerciseController {
     DeleteExerciseUseCase deleteExerciseUseCase;
 
     @GetMapping
-    public ResponseEntity<?> getExerciseList(
+    @ResponseStatus(HttpStatus.OK)
+    public Map<String, Object> getExerciseList(
             @PageableDefault(page = 0, size = 10) Pageable pageable) {
         var exercises = this.getExercisesUseCase.execute(pageable);
         var response = PageableResponseMapper.toPagination(exercises);
         logger.info("getExerciseList::ExerciseList: {}", response.get("totalItems"));
-        return ResponseEntity.ok(response);
+        return response;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Exercise> getExerciseById(
+    @ResponseStatus(HttpStatus.OK)
+    public Exercise getExerciseById(
             @PathVariable(value = "id") @Valid UUID id) {
         var foundExercise = this.getExerciseByIdUseCase.execute(id);
         logger.info("getExerciseById::Id: {}", id);
-        return ResponseEntity.status(HttpStatus.OK).body(foundExercise);
+        return foundExercise;
     }
 
     @PostMapping
-    public ResponseEntity<?> createExercise(@RequestBody @Valid CreateExerciseDto input) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createExercise(@RequestBody @Valid CreateExerciseDto input) {
         Exercise exercise = new Exercise(
                 input.name(),
                 input.description(),
@@ -63,11 +66,11 @@ public class ExerciseController {
                 input.videoUrl());
         this.createExerciseUseCase.execute(exercise);
         logger.info("createExercise::Exercise: {}", exercise.toString());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateExercise(
+    @ResponseStatus(HttpStatus.OK)
+    public void updateExercise(
             @RequestBody @Valid UpdateExerciseDto input,
             @PathVariable(value = "id") UUID id) {
         Exercise exercise = Exercise.builder()
@@ -82,14 +85,13 @@ public class ExerciseController {
                 .build();
         this.updateExerciseUseCase.execute(exercise);
         logger.info("updateExercise::Exercise{}", exercise.toString());
-        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteExercise(
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteExercise(
             @PathVariable(value = "id") UUID id) {
         this.deleteExerciseUseCase.execute(id);
         logger.info("deleteExercise::Id: {}", id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
