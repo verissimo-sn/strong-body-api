@@ -29,25 +29,25 @@ public class DeleteExerciseUseCaseTests {
     private DeleteExerciseUseCase deleteExerciseUseCase;
 
     @Mock
-    private ExerciseRepository exerciseRepository;
+    private ExerciseRepository repository;
 
     @BeforeEach
     void setUp() {
         var exercise = Exercise.builder().id(EXERCISE_ID).build();
-        when(this.exerciseRepository.getById(EXERCISE_ID)).thenReturn(Optional.of(exercise));
+        when(this.repository.getById(EXERCISE_ID)).thenReturn(Optional.of(exercise));
     }
 
     @Test
     @DisplayName("Should delete exercise by id")
     void deleteExerciseById() {
         this.deleteExerciseUseCase.execute(EXERCISE_ID);
-        verify(this.exerciseRepository).deleteById(EXERCISE_ID);
+        verify(this.repository).deleteById(EXERCISE_ID);
     }
 
     @Test
     @DisplayName("Should throw exception when exercise not exists")
     void throwExceptionWhenExerciseNotFound() {
-        when(this.exerciseRepository.getById(EXERCISE_ID)).thenReturn(Optional.empty());
+        when(this.repository.getById(EXERCISE_ID)).thenReturn(Optional.empty());
         var exception = assertThrows(NotFoundException.class, () -> {
             this.deleteExerciseUseCase.execute(EXERCISE_ID);
         });

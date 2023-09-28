@@ -3,8 +3,10 @@ package com.aitech.strongBody.infra.database.mongo;
 import com.aitech.strongBody.domain.entity.User;
 import com.aitech.strongBody.domain.repository.UserRepository;
 import com.aitech.strongBody.infra.database.mongo.model.UserDocument;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +15,12 @@ import java.util.UUID;
 
 @Component
 @Primary
+@AllArgsConstructor
 public class MongoUserRepositoryImpl implements UserRepository {
     private static final Logger logger = LoggerFactory.getLogger(MongoUserRepositoryImpl.class);
-    private final SpringDataMongoUserRepository repository;
 
-    public MongoUserRepositoryImpl(SpringDataMongoUserRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private SpringDataMongoUserRepository repository;
 
     @Override
     public void create(User user) {

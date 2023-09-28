@@ -28,7 +28,7 @@ public class UpdateExerciseUseCaseTests {
     private UpdateExerciseUseCase updateExerciseUseCase;
 
     @Mock
-    private ExerciseRepository exerciseRepository;
+    private ExerciseRepository repository;
 
     @BeforeEach
     void buildSetUp() {
@@ -41,20 +41,20 @@ public class UpdateExerciseUseCaseTests {
                 .imageUrl("imageUrl")
                 .videoUrl("videoUrl")
                 .build();
-        when(this.exerciseRepository.getById(this.exercise.getId())).thenReturn(Optional.of(this.exercise));
+        when(this.repository.getById(this.exercise.getId())).thenReturn(Optional.of(this.exercise));
     }
 
     @Test
     @DisplayName("Should update exercise with correct params")
     void updateAnExercise() {
         this.updateExerciseUseCase.execute(this.exercise);
-        verify(this.exerciseRepository).update(this.exercise);
+        verify(this.repository).update(this.exercise);
     }
 
     @Test
     @DisplayName("Should throw exception when exercise not found")
     void shouldThrowExceptionWhenExerciseNotFound() {
-        when(this.exerciseRepository.getById(this.exercise.getId())).thenReturn(Optional.empty());
+        when(this.repository.getById(this.exercise.getId())).thenReturn(Optional.empty());
         var exception = assertThrows(NotFoundException.class, () -> {
             this.updateExerciseUseCase.execute(this.exercise);
         });

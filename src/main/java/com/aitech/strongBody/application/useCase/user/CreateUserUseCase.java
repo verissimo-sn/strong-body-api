@@ -3,18 +3,19 @@ package com.aitech.strongBody.application.useCase.user;
 import com.aitech.strongBody.application.exception.BadRequestException;
 import com.aitech.strongBody.domain.entity.User;
 import com.aitech.strongBody.domain.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class CreateUserUseCase {
     private static final Logger logger = LoggerFactory.getLogger(CreateUserUseCase.class);
-    private final UserRepository repository;
 
-    public CreateUserUseCase(UserRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private final UserRepository repository;
 
     public void execute(User input) {
         var mail = input.getEmail().toLowerCase();

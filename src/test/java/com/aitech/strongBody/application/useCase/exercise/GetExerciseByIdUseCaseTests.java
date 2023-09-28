@@ -27,12 +27,12 @@ public class GetExerciseByIdUseCaseTests {
     private GetExerciseByIdUseCase getExerciseByIdUseCase;
 
     @Mock
-    private ExerciseRepository exerciseRepository;
+    private ExerciseRepository repository;
 
     @BeforeEach
     void buildSetUp() {
         var fakeExercise = Exercise.builder().id(EXERCISE_ID).build();
-       when(this.exerciseRepository.getById(EXERCISE_ID)).thenReturn(Optional.of(fakeExercise));
+       when(this.repository.getById(EXERCISE_ID)).thenReturn(Optional.of(fakeExercise));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class GetExerciseByIdUseCaseTests {
     @Test
     @DisplayName("Should throw exception when exercise not found")
     void throwExceptionWhenExerciseNotFound() {
-        when(this.exerciseRepository.getById(EXERCISE_ID)).thenReturn(Optional.empty());
+        when(this.repository.getById(EXERCISE_ID)).thenReturn(Optional.empty());
         var anyId = UUID.randomUUID();
         var exception = assertThrows(NotFoundException.class, () -> {
             this.getExerciseByIdUseCase.execute(anyId);

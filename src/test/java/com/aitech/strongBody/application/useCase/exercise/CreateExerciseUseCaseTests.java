@@ -22,7 +22,7 @@ public class CreateExerciseUseCaseTests {
     private CreateExerciseUseCase createExerciseUseCase;
 
     @Mock
-    private ExerciseRepository exerciseRepository;
+    private ExerciseRepository repository;
 
     @BeforeEach
     void setUp() {
@@ -41,6 +41,6 @@ public class CreateExerciseUseCaseTests {
     @DisplayName("Should create exercise with exercise params")
     void createAnExerciseCorrectly() {
         this.createExerciseUseCase.execute(this.exercise);
-        verify(this.exerciseRepository).create(this.exercise);
+        verify(this.repository).create(this.exercise);
     }
 }

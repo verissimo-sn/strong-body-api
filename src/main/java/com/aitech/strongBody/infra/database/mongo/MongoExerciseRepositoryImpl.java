@@ -3,8 +3,10 @@ package com.aitech.strongBody.infra.database.mongo;
 import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.domain.repository.ExerciseRepository;
 import com.aitech.strongBody.infra.database.mongo.model.ExerciseDocument;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,13 +17,12 @@ import java.util.UUID;
 
 @Component
 @Primary
+@AllArgsConstructor
 public class MongoExerciseRepositoryImpl implements ExerciseRepository {
     private static final Logger logger = LoggerFactory.getLogger(MongoExerciseRepositoryImpl.class);
-    private final SpringDataMongoExerciseRepository repository;
 
-    public MongoExerciseRepositoryImpl(SpringDataMongoExerciseRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private SpringDataMongoExerciseRepository repository;
 
     @Override
     public void create(Exercise exercise) {

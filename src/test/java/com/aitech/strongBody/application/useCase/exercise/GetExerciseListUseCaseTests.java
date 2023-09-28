@@ -30,11 +30,11 @@ public class GetExerciseListUseCaseTests {
     private GetExerciseListUseCase getExerciseListUseCase;
 
     @Mock
-    private ExerciseRepository exerciseRepository;
+    private ExerciseRepository repository;
 
     @BeforeEach
     void buildSetUp() {
-       when(this.exerciseRepository.getAll(pageInput)).thenReturn(this.fakeExercisePage);
+       when(this.repository.getAll(pageInput)).thenReturn(this.fakeExercisePage);
     }
 
     @Test
