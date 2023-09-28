@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void updateUser(
             @RequestBody @Valid UpdateUserDto input,
             @PathVariable(value = "id") UUID id) {
