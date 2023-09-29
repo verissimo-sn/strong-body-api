@@ -19,4 +19,9 @@ public class Training extends BaseEntity {
     private TrainingStatus status = TrainingStatus.NOT_STARTED;
     private int requiredSessions = 0;
     private int finishedSessions = 0;
+
+    public void update(String name, String level) {
+        this.setName(name == null ? this.name : name);
+        this.setLevel(level == null ? this.level : level);
+    }
 }
