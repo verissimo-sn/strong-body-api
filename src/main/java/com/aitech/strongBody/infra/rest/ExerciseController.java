@@ -72,7 +72,7 @@ public class ExerciseController {
     @ResponseStatus(HttpStatus.OK)
     public void updateExercise(
             @RequestBody @Valid UpdateExerciseDto input,
-            @PathVariable(value = "id") UUID id) {
+            @PathVariable(value = "id") @Valid UUID id) {
         Exercise exercise = Exercise.builder()
                 .id(id)
                 .name(input.name())
