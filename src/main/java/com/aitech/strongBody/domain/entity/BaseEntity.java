@@ -1,10 +1,12 @@
 package com.aitech.strongBody.domain.entity;
 
-import java.util.UUID;
-
+import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
 @SuperBuilder
+@Getter
 public class BaseEntity {
     private final UUID id;
 
@@ -14,9 +16,5 @@ public class BaseEntity {
 
     public BaseEntity(final UUID id) {
         this.id = id;
-    }
-
-    public UUID getId() {
-        return id;
     }
 }
