@@ -6,7 +6,6 @@ import com.aitech.strongBody.infra.database.h2.model.TrainingH2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-@Primary
 public class H2TrainingRepositoryImpl implements TrainingRepository {
     private static final Logger logger = LoggerFactory.getLogger(H2TrainingRepositoryImpl.class);
 

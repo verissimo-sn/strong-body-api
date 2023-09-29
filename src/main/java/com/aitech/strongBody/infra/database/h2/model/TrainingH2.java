@@ -2,8 +2,8 @@ package com.aitech.strongBody.infra.database.h2.model;
 
 import com.aitech.strongBody.domain.enums.TrainingStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import java.util.UUID;
 
