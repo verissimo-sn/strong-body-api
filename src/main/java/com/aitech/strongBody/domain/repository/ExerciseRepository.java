@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface ExerciseRepository {
     void create(Exercise exercise);
     Optional<Exercise> getById(UUID id);
-    List<Exercise> getByIds(UUID[] ids);
+    List<Exercise> getByIds(List<UUID> ids);
     Page<Exercise> getAll(Pageable pageable);
     void update(Exercise exercise);
     void deleteById(UUID id);

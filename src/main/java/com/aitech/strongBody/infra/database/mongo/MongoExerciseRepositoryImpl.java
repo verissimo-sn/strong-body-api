@@ -40,7 +40,7 @@ public class MongoExerciseRepositoryImpl implements ExerciseRepository {
 
 
     @Override
-    public List<Exercise> getByIds(UUID[] ids) {
+    public List<Exercise> getByIds(List<UUID> ids) {
         return this.repository.findByIds(ids)
                 .stream()
                 .map(this::fromDocumentToEntity)

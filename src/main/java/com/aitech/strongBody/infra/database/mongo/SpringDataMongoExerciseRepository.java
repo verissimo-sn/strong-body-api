@@ -11,5 +11,5 @@ import java.util.UUID;
 @Repository
 public interface SpringDataMongoExerciseRepository extends MongoRepository<ExerciseDocument, UUID> {
     @Query(value = "{ '_id' : { $in: ?0 } }")
-    List<ExerciseDocument> findByIds(UUID[] ids);
+    List<ExerciseDocument> findByIds(List<UUID> ids);
 }

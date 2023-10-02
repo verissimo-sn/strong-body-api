@@ -27,16 +27,14 @@ public class CreateTrainingGroupsUseCase {
 
     public void execute(UUID trainingId, List<TrainingGroup> trainingGroups) {
         Training training = this.getTrainingById(trainingId);
-        var trainingGroup = trainingGroups.stream().map(group -> {
+        var trainingGroup = trainingGroups.stream().peek(group -> {
             var providedExercises = group.getExercises();
-            UUID[] exerciseIds = providedExercises
+            List<UUID> exerciseIds = providedExercises
                         .stream()
                         .map(Exercise::getId)
-                        .toArray(UUID[]::new);
+                        .toList();
             List<Exercise> foundedExercises = this.getExercisesByIds(exerciseIds);
-            var validatedExercises = this.validateProvidedAndFoundedExercises(providedExercises, foundedExercises);
-            validatedExercises.forEach(group::addExercise);
-            return group;
+            foundedExercises.forEach(group::addExercise);
         }).toList();
         training.setTrainingGroups(trainingGroup);
         this.trainingRepository.update(training);
@@ -51,33 +49,12 @@ public class CreateTrainingGroupsUseCase {
         return foundTraining.get();
     }
 
-    private List<Exercise> getExercisesByIds(UUID[] ids) {
+    private List<Exercise> getExercisesByIds(List<UUID> ids) {
         var foundExercises = this.exerciseRepository.getByIds(ids);
         if(foundExercises.isEmpty()) {
-            logger.error("getExercisesByIds::Ids: {}", Arrays.stream(ids).toList().toString());
+            logger.error("getExercisesByIds::Ids: {}::Exercises not found", ids.toString());
+            throw new NotFoundException("Exercises not found");
         }
         return foundExercises;
-    }
-
-    private List<Exercise> validateProvidedAndFoundedExercises(
-            List<Exercise> providedExercises,
-            List<Exercise> foundedExercises) {
-        List<Exercise> validExercises = new ArrayList<>();
-        List<Exercise> invalidExercises = new ArrayList<>();
-        for (Exercise provided: providedExercises) {
-            Optional<Exercise> exerciseMatched = foundedExercises.stream()
-                        .filter(exercise -> exercise.getId() == provided.getId())
-                        .findFirst();
-            exerciseMatched.ifPresent(exercise -> {
-                if(exercise.equals(provided)) {
-                    validExercises.add(provided);
-                } else {
-                    invalidExercises.add(provided);
-                }
-            });
-        }
-        logger.warn("validateProvidedAndFoundedExercises::Invalid exercises: {}",
-                    invalidExercises.stream().map(Exercise::getId).toList().toString());
-        return validExercises;
     }
 }

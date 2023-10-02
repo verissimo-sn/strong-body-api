@@ -5,11 +5,9 @@ import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @SuperBuilder
 @ToString
-@EqualsAndHashCode(callSuper = true)
 public class Exercise extends BaseEntity {
     private String name;
     private String description;
