@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,6 +28,11 @@ public class H2ExerciseRepositoryImpl implements ExerciseRepository {
     public Optional<Exercise> getById(UUID id) {
         var foundExercise = this.repository.findById(id);
         return foundExercise.map(this::toEntity);
+    }
+
+    @Override
+    public List<Exercise> getByIds(UUID[] ids) {
+        return null;
     }
 
     @Override
