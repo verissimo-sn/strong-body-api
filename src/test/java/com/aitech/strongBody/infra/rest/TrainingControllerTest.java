@@ -2,6 +2,7 @@ package com.aitech.strongBody.infra.rest;
 
 import com.aitech.strongBody.application.exception.NotFoundException;
 import com.aitech.strongBody.domain.entity.Training;
+import com.aitech.strongBody.domain.entity.TrainingGroup;
 import com.aitech.strongBody.domain.entity.User;
 import com.aitech.strongBody.domain.enums.TrainingStatus;
 import com.aitech.strongBody.domain.repository.TrainingRepository;
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -42,6 +44,7 @@ public class TrainingControllerTest {
 
     @BeforeEach
     void beforeEach() {
+        List<TrainingGroup> trainingGroup = List.of(new TrainingGroup());
         var user = User.builder()
                 .id(UUID.randomUUID())
                 .build();
@@ -51,6 +54,7 @@ public class TrainingControllerTest {
                 .status(TrainingStatus.ACTIVE)
                 .name("Test training")
                 .level("Beginner")
+                .trainingGroups(trainingGroup)
                 .build();
         this.trainingRepository.create(this.training);
         this.userRepository.create(user);
