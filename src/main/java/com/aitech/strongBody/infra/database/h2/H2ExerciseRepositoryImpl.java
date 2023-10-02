@@ -31,7 +31,7 @@ public class H2ExerciseRepositoryImpl implements ExerciseRepository {
     }
 
     @Override
-    public List<Exercise> getByIds(UUID[] ids) {
+    public List<Exercise> getByIds(List<UUID> ids) {
         return null;
     }
 

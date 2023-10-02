@@ -85,7 +85,7 @@ public class TrainingController {
         logger.info("createTraining::Training: {}", training.toString());
     }
 
-    @PostMapping("/{id}/trainingGroups")
+    @PostMapping("/{id}/training-groups")
     @ResponseStatus(HttpStatus.CREATED)
     public void createTrainingGroups(
             @PathVariable(value = "id") @Valid UUID id,
