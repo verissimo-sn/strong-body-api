@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,15 +35,6 @@ public class MongoExerciseRepositoryImpl implements ExerciseRepository {
         var foundExercise = this.repository.findById(id);
         logger.info("getById::Id: {}::Exercise: {}", id, foundExercise.toString());
         return foundExercise.map(this::fromDocumentToEntity);
-    }
-
-
-    @Override
-    public List<Exercise> getByIds(UUID[] ids) {
-        return this.repository.findByIds(ids)
-                .stream()
-                .map(this::fromDocumentToEntity)
-                .toList();
     }
 
     @Override

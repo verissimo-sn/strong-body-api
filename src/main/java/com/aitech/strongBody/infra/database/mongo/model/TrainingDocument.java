@@ -5,8 +5,6 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -20,5 +18,4 @@ public class TrainingDocument {
     private TrainingStatus status;
     private int requiredSessions = 0;
     private int finishedSessions = 0;
-    private List<TrainingGroupDocument> trainingGroups = new ArrayList<>();
 }

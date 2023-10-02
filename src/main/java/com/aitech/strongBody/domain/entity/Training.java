@@ -4,8 +4,6 @@ import com.aitech.strongBody.domain.enums.TrainingStatus;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -21,7 +19,6 @@ public class Training extends BaseEntity {
     private TrainingStatus status = TrainingStatus.NOT_STARTED;
     private int requiredSessions = 0;
     private int finishedSessions = 0;
-    private List<TrainingGroup> trainingGroups = new ArrayList<>();
 
     public void update(String name, String level) {
         this.setName(name == null ? this.name : name);
