@@ -14,8 +14,4 @@ public class TrainingGroup {
     private String description;
     private int order;
     private List<Exercise> exercises = new ArrayList<>();
-
-    public void addExercise(Exercise exercise) {
-        this.exercises.add(exercise);
-    }
 }

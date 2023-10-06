@@ -12,7 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -25,19 +26,22 @@ public class CreateTrainingGroupsUseCase {
     @Autowired
     private final ExerciseRepository exerciseRepository;
 
-    public void execute(UUID trainingId, List<TrainingGroup> trainingGroups) {
+    public void execute(final UUID trainingId, final List<TrainingGroup> trainingGroups) {
         Training training = this.getTrainingById(trainingId);
-        var trainingGroup = trainingGroups.stream().peek(group -> {
-            var providedExercises = group.getExercises();
-            List<UUID> exerciseIds = providedExercises
-                        .stream()
-                        .map(Exercise::getId)
-                        .toList();
-            List<Exercise> foundedExercises = this.getExercisesByIds(exerciseIds);
-            foundedExercises.forEach(group::addExercise);
-        }).toList();
-        training.setTrainingGroups(trainingGroup);
+        training.setTrainingGroups(trainingGroups.stream()
+                .peek(this::reHydrateExerciseByIds)
+                .toList());
         this.trainingRepository.update(training);
+    }
+
+    private void reHydrateExerciseByIds(TrainingGroup group) {
+        var providedExercises = group.getExercises();
+        List<UUID> exerciseIds = providedExercises
+                    .stream()
+                    .map(Exercise::getId)
+                    .toList();
+        var exercises = this.exerciseRepository.getByIds(exerciseIds);
+        group.setExercises(exercises);
     }
 
     private Training getTrainingById(UUID id) {
@@ -47,14 +51,5 @@ public class CreateTrainingGroupsUseCase {
             throw new NotFoundException("Training not found");
         }
         return foundTraining.get();
-    }
-
-    private List<Exercise> getExercisesByIds(List<UUID> ids) {
-        var foundExercises = this.exerciseRepository.getByIds(ids);
-        if(foundExercises.isEmpty()) {
-            logger.error("getExercisesByIds::Ids: {}::Exercises not found", ids.toString());
-            throw new NotFoundException("Exercises not found");
-        }
-        return foundExercises;
     }
 }
