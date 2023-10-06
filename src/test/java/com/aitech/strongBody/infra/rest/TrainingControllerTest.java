@@ -1,13 +1,16 @@
 package com.aitech.strongBody.infra.rest;
 
 import com.aitech.strongBody.application.exception.NotFoundException;
+import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.domain.entity.Training;
 import com.aitech.strongBody.domain.entity.TrainingGroup;
 import com.aitech.strongBody.domain.entity.User;
 import com.aitech.strongBody.domain.enums.TrainingStatus;
+import com.aitech.strongBody.domain.repository.ExerciseRepository;
 import com.aitech.strongBody.domain.repository.TrainingRepository;
 import com.aitech.strongBody.domain.repository.UserRepository;
 import com.aitech.strongBody.infra.rest.dto.training.CreateTrainingDto;
+import com.aitech.strongBody.infra.rest.dto.training.CreateTrainingGroupsDto;
 import com.aitech.strongBody.infra.rest.dto.training.UpdateTrainingDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
@@ -34,17 +37,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("[Controller] TrainingControllerTest")
 public class TrainingControllerTest {
     private Training training;
+
     @Autowired
     MockMvc mockMvc;
+
     @Autowired
     TrainingRepository trainingRepository;
 
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ExerciseRepository exerciseRepository;
+
     @BeforeEach
     void beforeEach() {
-        List<TrainingGroup> trainingGroup = List.of(new TrainingGroup());
+        var exercises = List.of(new Exercise());
+        TrainingGroup trainingGroup = TrainingGroup.builder().tag("A").description("description").order(1).exercises(exercises).build();
         var user = User.builder()
                 .id(UUID.randomUUID())
                 .build();
@@ -54,16 +63,18 @@ public class TrainingControllerTest {
                 .status(TrainingStatus.ACTIVE)
                 .name("Test training")
                 .level("Beginner")
-                .trainingGroups(trainingGroup)
+                .trainingGroups(List.of(trainingGroup))
                 .build();
         this.trainingRepository.create(this.training);
         this.userRepository.create(user);
+        this.exerciseRepository.create(exercises.get(0));
     }
 
     @AfterEach
     void afterEach() {
         this.trainingRepository.deleteAll();
         this.userRepository.deleteAll();
+        this.exerciseRepository.deleteAll();
     }
 
     @Test
@@ -169,6 +180,23 @@ public class TrainingControllerTest {
                 .andExpect(status().isCreated());
     }
 
+    @Test
+    @DisplayName("Should create training groups correct")
+    void createTrainingGroups() throws Exception {
+        CreateTrainingGroupsDto[] input = new CreateTrainingGroupsDto[]{
+                new CreateTrainingGroupsDto(
+                        this.training.getTrainingGroups().get(0).getTag(),
+                        this.training.getTrainingGroups().get(0).getDescription(),
+                        this.training.getTrainingGroups().get(0).getOrder(),
+                        List.of(this.training.getTrainingGroups().get(0).getExercises().get(0).getId().toString())
+                )
+        };
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .post("/trainings/{id}/training-groups", this.training.getId())
+                        .content(new ObjectMapper().writeValueAsString(input))
+                .contentType("application/json"))
+                .andExpect(status().isCreated());
+    }
 
     @Test
     @DisplayName("Should throw badRequest when update training with invalid id")

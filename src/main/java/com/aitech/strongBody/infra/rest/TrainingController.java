@@ -110,7 +110,6 @@ public class TrainingController {
                     return group;
                 }).toList();
         this.createTrainingGroupsUseCase.execute(id, trainingGroups);
-//        logger.info("createTrainingGroups::TrainingGroups: {}", training.toString());
     }
 
     @PutMapping("/{id}")
