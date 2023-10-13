@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-@Primary
 @AllArgsConstructor
 public class MongoExerciseRepositoryImpl implements ExerciseRepository {
     private static final Logger logger = LoggerFactory.getLogger(MongoExerciseRepositoryImpl.class);
