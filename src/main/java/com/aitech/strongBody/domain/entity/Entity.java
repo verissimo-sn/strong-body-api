@@ -8,13 +8,12 @@ import lombok.experimental.SuperBuilder;
 import java.util.UUID;
 
 @SuperBuilder
-@Getter
-@Setter
+@Getter @Setter
 @EqualsAndHashCode(of = "id")
-public class BaseEntity {
-    private UUID id;
+public class Entity {
+    protected UUID id;
 
-    public BaseEntity() {
+    protected Entity() {
         this.id = UUID.randomUUID();
     }
 }

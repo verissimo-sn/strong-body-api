@@ -5,35 +5,33 @@ import com.aitech.strongBody.domain.entity.Training;
 import com.aitech.strongBody.domain.repository.TrainingRepository;
 import com.aitech.strongBody.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Log4j2
 @Service
 @AllArgsConstructor
 public class CreateTrainingUseCase {
-    private static final Logger logger = LoggerFactory.getLogger(CreateTrainingUseCase.class);
-
     @Autowired
     private final TrainingRepository trainingRepository;
 
     @Autowired
     private final UserRepository userRepository;
 
-    public void execute(Training input) {
+    public UUID execute(Training input) {
         this.getUserById(input.getUserId());
         this.trainingRepository.create(input);
-        logger.info("execute::input: {}", input.toString());
+        log.info("execute::Id: {}", input.getId().toString());
+        return input.getId();
     }
 
     private void getUserById(UUID id) {
-        var foundUser = this.userRepository.getById(id);
-        if (foundUser.isEmpty()) {
-            logger.error("getUserById::Id: {}::User not found", id);
-            throw new NotFoundException("User not found");
-        }
+        this.userRepository.getById(id).orElseThrow(() -> {
+            log.error("getUserById::Id: {}::User not found", id);
+            return new NotFoundException("User not found");
+        });
     }
 }

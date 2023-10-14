@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter @Setter
 @SuperBuilder
 @ToString
-public class Training extends BaseEntity {
+public class Training extends Entity {
     @NonNull private UUID userId;
     @NonNull private String name;
     @NonNull private String level;

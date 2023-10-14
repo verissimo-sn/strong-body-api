@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 @Getter @Setter
 @SuperBuilder
 @ToString
-public class Exercise extends BaseEntity {
+public class Exercise extends Entity {
     private String name;
     private String description;
     private String level;

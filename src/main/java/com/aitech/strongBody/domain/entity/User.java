@@ -5,11 +5,10 @@ import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @SuperBuilder
 @ToString
-public class User extends BaseEntity {
+public class User extends Entity {
     private String name;
     private String email;
     private String nickname;

@@ -10,6 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @Tag("Unit")
@@ -27,6 +30,7 @@ public class CreateExerciseUseCaseTests {
     @BeforeEach
     void setUp() {
         this.exercise = Exercise.builder()
+                .id(UUID.randomUUID())
                 .name("name")
                 .description("description")
                 .level("level")
@@ -38,9 +42,10 @@ public class CreateExerciseUseCaseTests {
     }
 
     @Test
-    @DisplayName("Should create exercise with exercise params")
+    @DisplayName("Should create exercise with params and return id")
     void createAnExerciseCorrectly() {
-        this.createExerciseUseCase.execute(this.exercise);
+        var id = this.createExerciseUseCase.execute(this.exercise);
         verify(this.repository).create(this.exercise);
+        assertEquals(this.exercise.getId(), id);
     }
 }

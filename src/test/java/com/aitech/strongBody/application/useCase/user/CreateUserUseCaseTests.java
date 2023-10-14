@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,6 +34,7 @@ public class CreateUserUseCaseTests {
     @BeforeEach
     void setUp() {
         this.user = User.builder()
+                .id(UUID.randomUUID())
                 .name("name")
                 .email("email")
                 .nickname("nickName")
@@ -44,8 +46,9 @@ public class CreateUserUseCaseTests {
     @Test
     @DisplayName("Should create user with correctly params")
     void createAnExerciseCorrectly() {
-        this.createUserUseCase.execute(this.user);
+        UUID id = this.createUserUseCase.execute(this.user);
         verify(this.userRepository).create(this.user);
+        assertEquals(this.user.getId(), id);
     }
 
     @Test

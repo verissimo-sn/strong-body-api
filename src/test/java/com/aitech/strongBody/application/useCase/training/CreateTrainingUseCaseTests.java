@@ -32,12 +32,14 @@ public class CreateTrainingUseCaseTests {
 
     @Mock
     private TrainingRepository trainingRepository;
+
     @Mock
     private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
         this.training = Training.builder()
+                .id(UUID.randomUUID())
                 .userId(UUID.randomUUID())
                 .name("name")
                 .level("strong")
@@ -50,8 +52,9 @@ public class CreateTrainingUseCaseTests {
     @Test
     @DisplayName("Should create training correctly")
     void createAnTrainingCorrectly() {
-        this.createTrainingUseCase.execute(this.training);
+        UUID id = this.createTrainingUseCase.execute(this.training);
         verify(this.trainingRepository).create(this.training);
+        assertEquals(this.training.getId(), id);
     }
 
     @Test
