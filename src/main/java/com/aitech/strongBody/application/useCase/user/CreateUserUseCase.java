@@ -28,10 +28,9 @@ public class CreateUserUseCase {
     }
 
     private void mailAlreadyRegistered(String email) {
-        var foundUser = this.repository.getByEmail(email);
-        if (foundUser.isPresent()) {
-            log.error("getUserByEmail::User email already in use");
+        this.repository.getByEmail(email).ifPresent(user -> {
+            log.error("mailAlreadyRegistered::Email: {}::User email already in use", user.getEmail());
             throw new BadRequestException("User email already in use");
-        }
+        });
     }
 }

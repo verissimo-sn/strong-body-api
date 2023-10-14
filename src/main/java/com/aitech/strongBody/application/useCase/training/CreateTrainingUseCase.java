@@ -15,6 +15,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class CreateTrainingUseCase {
+
     @Autowired
     private final TrainingRepository trainingRepository;
 

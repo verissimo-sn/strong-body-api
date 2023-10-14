@@ -7,18 +7,17 @@ import com.aitech.strongBody.domain.entity.TrainingGroup;
 import com.aitech.strongBody.domain.repository.ExerciseRepository;
 import com.aitech.strongBody.domain.repository.TrainingRepository;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Log4j2
 @Service
 @AllArgsConstructor
 public class CreateTrainingGroupsUseCase {
-    private static final Logger logger = LoggerFactory.getLogger(CreateTrainingGroupsUseCase.class);
 
     @Autowired
     private final TrainingRepository trainingRepository;
@@ -45,11 +44,9 @@ public class CreateTrainingGroupsUseCase {
     }
 
     private Training getTrainingById(UUID id) {
-        var foundTraining = this.trainingRepository.getById(id);
-        if(foundTraining.isEmpty()) {
-            logger.error("getTrainingById::Id: {}::Training not found", id);
-            throw new NotFoundException("Training not found");
-        }
-        return foundTraining.get();
+        return this.trainingRepository.getById(id).orElseThrow(() -> {
+            log.error("getTrainingById::Id: {}::Training not found", id);
+            return new NotFoundException("Training not found");
+        });
     }
 }

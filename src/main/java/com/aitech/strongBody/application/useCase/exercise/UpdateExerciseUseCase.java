@@ -4,17 +4,16 @@ import com.aitech.strongBody.application.exception.NotFoundException;
 import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.domain.repository.ExerciseRepository;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Log4j2
 @Service
 @AllArgsConstructor
 public class UpdateExerciseUseCase {
-    private static final Logger logger = LoggerFactory.getLogger(UpdateExerciseUseCase.class);
 
     @Autowired
     private final ExerciseRepository repository;
@@ -30,15 +29,13 @@ public class UpdateExerciseUseCase {
                 input.getImageUrl(),
                 input.getVideoUrl());
         this.repository.update(exercise);
-        logger.info("execute::input: {}", input.toString());
+        log.info("execute::input: {}", input.toString());
     }
 
     private Exercise getExerciseById(UUID id) {
-        var foundExercise = this.repository.getById(id);
-        if (foundExercise.isEmpty()) {
-            logger.error("getExerciseById::Id: {}::Exercise not found", id);
-            throw new NotFoundException("Exercise not found");
-        }
-        return foundExercise.get();
+        return this.repository.getById(id).orElseThrow(() -> {
+            log.error("getExerciseById::Id: {}::Exercise not found", id);
+            return new NotFoundException("Exercise not found");
+        });
     }
 }

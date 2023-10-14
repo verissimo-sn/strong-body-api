@@ -4,17 +4,16 @@ import com.aitech.strongBody.application.exception.NotFoundException;
 import com.aitech.strongBody.domain.entity.User;
 import com.aitech.strongBody.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Log4j2
 @Service
 @AllArgsConstructor
 public class UpdateUserUseCase {
-    private static final Logger logger = LoggerFactory.getLogger(UpdateUserUseCase.class);
 
     @Autowired
     private final UserRepository repository;
@@ -27,15 +26,13 @@ public class UpdateUserUseCase {
                 input.getNickname(),
                 input.getAvatarUrl());
         this.repository.update(user);
-        logger.info("execute::input: {}", input.toString());
+        log.info("execute::input: {}", input.toString());
     }
 
     private User getUserById(UUID id) {
-        var foundUser = this.repository.getById(id);
-        if (foundUser.isEmpty()) {
-            logger.error("getUserById::Id: {}::User not found", id);
-            throw new NotFoundException("User not found");
-        }
-        return foundUser.get();
+         return this.repository.getById(id).orElseThrow(() -> {
+            log.error("getUserById::Id: {}::User not found", id);
+            return new NotFoundException("User not found");
+        });
     }
 }

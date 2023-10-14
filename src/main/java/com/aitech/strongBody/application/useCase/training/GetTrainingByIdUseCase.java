@@ -4,27 +4,24 @@ import com.aitech.strongBody.application.exception.NotFoundException;
 import com.aitech.strongBody.domain.entity.Training;
 import com.aitech.strongBody.domain.repository.TrainingRepository;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Log4j2
 @Service
 @AllArgsConstructor
 public class GetTrainingByIdUseCase {
-    private static final Logger logger = LoggerFactory.getLogger(GetTrainingByIdUseCase.class);
 
     @Autowired
     private final TrainingRepository trainingRepository;
 
     public Training execute(UUID id) {
-        var foundTraining = this.trainingRepository.getById(id);
-        if (foundTraining.isEmpty()) {
-            logger.error("execute::Id: {}::Training not found", id);
-            throw new NotFoundException("Training not found");
-        }
-        return foundTraining.get();
+        return this.trainingRepository.getById(id).orElseThrow(() -> {
+            log.error("execute::Id: {}::Training not found", id);
+            return new NotFoundException("Training not found");
+        });
     }
 }
