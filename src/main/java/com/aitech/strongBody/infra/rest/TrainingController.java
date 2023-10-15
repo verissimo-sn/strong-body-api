@@ -4,6 +4,7 @@ import com.aitech.strongBody.application.useCase.training.*;
 import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.domain.entity.Training;
 import com.aitech.strongBody.domain.entity.TrainingGroup;
+import com.aitech.strongBody.infra.rest.dto.shared.IdentifierDto;
 import com.aitech.strongBody.infra.rest.dto.training.CreateTrainingDto;
 import com.aitech.strongBody.infra.rest.dto.training.CreateTrainingGroupsDto;
 import com.aitech.strongBody.infra.rest.dto.training.UpdateTrainingDto;
@@ -76,13 +77,14 @@ public class TrainingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTraining(@RequestBody @Valid CreateTrainingDto input) {
+    public IdentifierDto createTraining(@RequestBody @Valid CreateTrainingDto input) {
         Training training = new Training(
                 input.userId(),
                 input.name(),
                 input.level());
-        this.createTrainingUseCase.execute(training);
+        UUID id = this.createTrainingUseCase.execute(training);
         logger.info("createTraining::Training: {}", training.toString());
+        return new IdentifierDto(id);
     }
 
     @PostMapping("/{id}/training-groups")

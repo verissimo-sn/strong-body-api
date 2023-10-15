@@ -4,6 +4,7 @@ import com.aitech.strongBody.application.useCase.exercise.*;
 import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.infra.rest.dto.exercise.CreateExerciseDto;
 import com.aitech.strongBody.infra.rest.dto.exercise.UpdateExerciseDto;
+import com.aitech.strongBody.infra.rest.dto.shared.IdentifierDto;
 import com.aitech.strongBody.infra.utils.PageableResponseMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -55,7 +56,7 @@ public class ExerciseController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createExercise(@RequestBody @Valid CreateExerciseDto input) {
+    public IdentifierDto createExercise(@RequestBody @Valid CreateExerciseDto input) {
         Exercise exercise = new Exercise(
                 input.name(),
                 input.description(),
@@ -64,8 +65,9 @@ public class ExerciseController {
                 input.equipment(),
                 input.imageUrl(),
                 input.videoUrl());
-        this.createExerciseUseCase.execute(exercise);
+        UUID id = this.createExerciseUseCase.execute(exercise);
         logger.info("createExercise::Exercise: {}", exercise.toString());
+        return new IdentifierDto(id);
     }
 
     @PutMapping("/{id}")

@@ -4,6 +4,7 @@ import com.aitech.strongBody.application.useCase.user.CreateUserUseCase;
 import com.aitech.strongBody.application.useCase.user.GetUserByIdUseCase;
 import com.aitech.strongBody.application.useCase.user.UpdateUserUseCase;
 import com.aitech.strongBody.domain.entity.User;
+import com.aitech.strongBody.infra.rest.dto.shared.IdentifierDto;
 import com.aitech.strongBody.infra.rest.dto.user.CreateUserDto;
 import com.aitech.strongBody.infra.rest.dto.user.UpdateUserDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,16 +40,16 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UUID createUser(@RequestBody @Valid CreateUserDto input) {
+    public IdentifierDto createUser(@RequestBody @Valid CreateUserDto input) {
         User user = new User(
                 input.name(),
                 input.email(),
                 input.nickname(),
                 input.avatarUrl(),
                 input.password());
-        this.createUserUseCase.execute(user);
+        UUID id = this.createUserUseCase.execute(user);
         logger.info("createUser::User: {}", user.toString());
-        return user.getId();
+        return new IdentifierDto(id);
     }
 
     @PutMapping("/{id}")

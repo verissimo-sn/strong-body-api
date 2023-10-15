@@ -63,7 +63,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Should throw badRequest exception when get user by id with invalid id")
-    void ThrowExceptionWhenGetUserByIdWithInvalidId() throws Exception {
+    void throwExceptionWhenGetUserByIdWithInvalidId() throws Exception {
         // TODO: format error response message with a custom exception handler
         this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{id}", "invalid-uuid"))
                 .andExpect(status().isBadRequest());
@@ -95,7 +95,8 @@ public class UserControllerTest {
                                 this.user.getPassword()
                         )))
                 .contentType("application/json"))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isString());
     }
 
     @Test

@@ -135,7 +135,8 @@ public class ExerciseControllerTest {
                                 this.exercise.getVideoUrl()
                         )))
                 .contentType("application/json"))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isString());
     }
 
     @Test
