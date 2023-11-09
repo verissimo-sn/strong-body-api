@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,15 +45,14 @@ public class CreateUserUseCaseTests {
     @Test
     @DisplayName("Should create user with correctly params")
     void createAnExerciseCorrectly() {
-        UUID id = this.createUserUseCase.execute(this.user);
+        this.createUserUseCase.execute(this.user);
         verify(this.userRepository).create(this.user);
-        assertEquals(this.user.getId(), id);
     }
 
     @Test
     @DisplayName("Should throw exception when email already in use")
     void throwExceptionWhenEmailAlreadyInUse() {
-        when(this.userRepository.getByEmail(this.user.getEmail())).thenReturn(Optional.of(this.user));
+        when(this.userRepository.getByEmail(this.user.getEmail())).thenReturn(this.user);
         var exception = assertThrows(BadRequestException.class, () -> {
             this.createUserUseCase.execute(this.user);
         });

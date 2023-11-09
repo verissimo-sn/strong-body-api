@@ -1,55 +1,38 @@
 package com.aitech.strongBody.infra.rest;
 
-import com.aitech.strongBody.application.useCase.user.CreateUserUseCase;
 import com.aitech.strongBody.application.useCase.user.GetUserByIdUseCase;
 import com.aitech.strongBody.application.useCase.user.UpdateUserUseCase;
 import com.aitech.strongBody.domain.entity.User;
-import com.aitech.strongBody.infra.rest.dto.shared.IdentifierDto;
-import com.aitech.strongBody.infra.rest.dto.user.CreateUserDto;
 import com.aitech.strongBody.infra.rest.dto.user.UpdateUserDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@Log4j2
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 @Tag(name = "User", description = "User API")
 public class UserController {
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
-    CreateUserUseCase createUserUseCase;
+    private final GetUserByIdUseCase getUserByIdUseCase;
     @Autowired
-    GetUserByIdUseCase getUserByIdUseCase;
-    @Autowired
-    UpdateUserUseCase updateUserUseCase;
+    private final UpdateUserUseCase updateUserUseCase;
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public User getUserById(
             @PathVariable(value = "id") @Valid UUID id) {
         var foundUser = this.getUserByIdUseCase.execute(id);
-        logger.info("getUserById::Id: {}", id);
+        log.info("getUserById::Id: {}", id);
         return foundUser;
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public IdentifierDto createUser(@RequestBody @Valid CreateUserDto input) {
-        User user = new User(
-                input.name(),
-                input.email(),
-                input.nickname(),
-                input.avatarUrl(),
-                input.password());
-        UUID id = this.createUserUseCase.execute(user);
-        logger.info("createUser::User: {}", user.toString());
-        return new IdentifierDto(id);
     }
 
     @PutMapping("/{id}")
@@ -64,6 +47,6 @@ public class UserController {
                 .avatarUrl(input.avatarUrl())
                 .build();
         this.updateUserUseCase.execute(user);
-        logger.info("updateUser::User: {}", user.toString());
+        log.info("updateUser::User: {}", user.toString());
     }
 }

@@ -4,40 +4,39 @@ import com.aitech.strongBody.domain.entity.User;
 import com.aitech.strongBody.domain.repository.UserRepository;
 import com.aitech.strongBody.infra.database.mongo.model.UserDocument;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Log4j2
 @Component
 @AllArgsConstructor
 public class MongoUserRepositoryImpl implements UserRepository {
-    private static final Logger logger = LoggerFactory.getLogger(MongoUserRepositoryImpl.class);
-
     @Autowired
     private SpringDataMongoUserRepository repository;
 
     @Override
     public void create(User user) {
-        logger.info("create::User: {}", user.toString());
-        this.repository.save(this.fromEntityToDocument(user));
+        log.info("create::User: {}", user.toString());
+        this.repository.save(this.toDocument(user));
     }
 
     @Override
     public Optional<User> getById(UUID id) {
         var foundUser = this.repository.findById(id);
-        logger.info("getById::Id: {}::User: {}", id, foundUser.toString());
-        return foundUser.map(this::fromDocumentToEntity);
+        log.info("getById::Id: {}::User: {}", id, foundUser.toString());
+        return foundUser.map(this::toEntity);
     }
 
     @Override
-    public Optional<User> getByEmail(String email) {
-        var foundEmail = this.repository.findByEmail(email);
-        logger.info("getByEmail::Email: {}", email);
-        return foundEmail.map(this::fromDocumentToEntity);
+    public UserDetails getByEmail(String email) {
+        var user = this.repository.findByEmail(email);
+        log.info("getByEmail::Email: {}", email);
+        return user != null ? this.toEntity((UserDocument) user) : null;
     }
 
     @Override
@@ -47,12 +46,11 @@ public class MongoUserRepositoryImpl implements UserRepository {
 
     @Override
     public void update(User user) {
-        logger.info("update::User: {}", user.toString());
-        this.repository.save(this.fromEntityToDocument(user));
+        log.info("update::User: {}", user.toString());
+        this.repository.save(this.toDocument(user));
     }
 
-
-    private User fromDocumentToEntity(UserDocument document) {
+    private User toEntity(UserDocument document) {
         return User
                 .builder()
                 .id(document.getId())
@@ -60,16 +58,20 @@ public class MongoUserRepositoryImpl implements UserRepository {
                 .email(document.getEmail())
                 .nickname(document.getNickname())
                 .avatarUrl(document.getAvatarUrl())
+                .password(document.getPassword())
+                .role(document.getRole())
                 .build();
     }
 
-    private UserDocument fromEntityToDocument(User entity) {
+    private UserDocument toDocument(User entity) {
         var userDocument = new UserDocument();
         userDocument.setId(entity.getId());
         userDocument.setName(entity.getName());
         userDocument.setEmail(entity.getEmail());
         userDocument.setNickname(entity.getNickname());
         userDocument.setAvatarUrl(entity.getAvatarUrl());
+        userDocument.setPassword(entity.getPassword());
+        userDocument.setRole(entity.getRole());
         return userDocument;
     }
 }
