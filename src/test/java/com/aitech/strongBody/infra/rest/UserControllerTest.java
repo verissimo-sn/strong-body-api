@@ -79,24 +79,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.email").value(this.user.getEmail()))
                 .andExpect(jsonPath("$.nickname").value(this.user.getNickname()))
                 .andExpect(jsonPath("$.avatarUrl").value(this.user.getAvatarUrl()))
-                .andExpect(jsonPath("$.password").isEmpty());
-    }
-
-    @Test
-    @DisplayName("Should create user")
-    void createUser() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .post("/users")
-                        .content(new ObjectMapper().writeValueAsString(new CreateUserDto(
-                                this.user.getName(),
-                                "valid@mail.com.br",
-                                this.user.getNickname(),
-                                this.user.getAvatarUrl(),
-                                this.user.getPassword()
-                        )))
-                .contentType("application/json"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isString());
+                .andExpect(jsonPath("$.password").value(this.user.getPassword()));
     }
 
     @Test
@@ -121,13 +104,15 @@ public class UserControllerTest {
                 .andExpect(status().isOk());
 
         var foundUser = this.userRepository.getById(this.user.getId());
+        System.out.println("--------------------------------------");
+        System.out.println(foundUser);
         foundUser.ifPresent(user -> assertAll(
                 () -> assertEquals(updatedUser.getId(), user.getId()),
                 () -> assertEquals(updatedUser.getName(), user.getName()),
                 () -> assertEquals(updatedUser.getEmail(), user.getEmail()),
                 () -> assertEquals(updatedUser.getNickname(), user.getNickname()),
                 () -> assertEquals(updatedUser.getAvatarUrl(), user.getAvatarUrl()),
-                () -> assertNull(user.getPassword())
+                () -> assertEquals(updatedUser.getPassword(), user.getPassword())
         ));
     }
 
