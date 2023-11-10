@@ -6,6 +6,7 @@ import com.aitech.strongBody.infra.config.security.TokenService;
 import com.aitech.strongBody.infra.rest.dto.auth.SignInDto;
 import com.aitech.strongBody.infra.rest.dto.shared.TokenDto;
 import com.aitech.strongBody.infra.rest.dto.user.CreateUserDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Tag(name = "Auth", description = "Auth API")
 public class AuthController {
 
     @Autowired
