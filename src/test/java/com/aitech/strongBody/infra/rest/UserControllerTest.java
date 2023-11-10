@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Tag("integration")
@@ -48,6 +49,32 @@ public class UserControllerTest {
     @AfterEach
     void afterEach() {
         this.userRepository.deleteAll();
+    }
+
+
+    @Test
+    @Disabled
+    @DisplayName("Should throw notFound exception when get user by id when user not created")
+    void throwExceptionWithGetUserByIdWhenUserNotCreated() throws Exception {
+        // TODO: mock authentication user to enable this test
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{id}", UUID.randomUUID()))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException))
+                .andExpect(result -> assertEquals("User not found", Objects.requireNonNull(result.getResolvedException()).getMessage()));
+    }
+
+    @Test
+    @Disabled
+    @DisplayName("Should return logged user information")
+    void getUserInformation() throws Exception {
+        // TODO: mock authentication user to enable this test
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/users/me"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(this.user.getId().toString()))
+                .andExpect(jsonPath("$.name").value(this.user.getName()))
+                .andExpect(jsonPath("$.email").value(this.user.getEmail()))
+                .andExpect(jsonPath("$.nickname").value(this.user.getNickname()))
+                .andExpect(jsonPath("$.avatarUrl").value(this.user.getAvatarUrl()));
     }
 
     @Test

@@ -4,6 +4,7 @@ import com.aitech.strongBody.application.useCase.training.*;
 import com.aitech.strongBody.domain.entity.Exercise;
 import com.aitech.strongBody.domain.entity.Training;
 import com.aitech.strongBody.domain.entity.TrainingGroup;
+import com.aitech.strongBody.domain.entity.User;
 import com.aitech.strongBody.infra.rest.dto.shared.IdentifierDto;
 import com.aitech.strongBody.infra.rest.dto.training.CreateTrainingDto;
 import com.aitech.strongBody.infra.rest.dto.training.CreateTrainingGroupsDto;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -76,9 +78,12 @@ public class TrainingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public IdentifierDto createTraining(@RequestBody @Valid CreateTrainingDto input) {
+    public IdentifierDto createTraining(
+            @RequestBody @Valid CreateTrainingDto input,
+            Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
         Training training = new Training(
-                input.userId(),
+                user.getId(),
                 input.name(),
                 input.level());
         UUID id = this.createTrainingUseCase.execute(training);
@@ -117,10 +122,12 @@ public class TrainingController {
     @ResponseStatus(HttpStatus.OK)
     public void updateTraining(
             @RequestBody @Valid UpdateTrainingDto input,
-            @PathVariable(value = "id") @Valid @NotBlank UUID id) {
+            @PathVariable(value = "id") @Valid @NotBlank UUID id,
+            Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
         Training training = Training.builder()
                 .id(id)
-                .userId(input.userId())
+                .userId(user.getId())
                 .name(input.name())
                 .level(input.level())
                 .build();
