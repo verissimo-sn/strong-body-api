@@ -12,8 +12,7 @@ import com.aitech.strongBody.infra.utils.PageableResponseMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Log4j2
 @RestController
 @RequestMapping("/trainings")
 @Tag(name = "Training", description = "Training API")
 public class TrainingController {
-    private static final Logger logger = LoggerFactory.getLogger(TrainingController.class);
 
     @Autowired
     private GetTrainingListUseCase getTrainingListUseCase;
@@ -52,7 +51,7 @@ public class TrainingController {
             @PageableDefault(page = 0, size = 10) Pageable pageable) {
         var trainings = this.getTrainingListUseCase.execute(pageable);
         var response = PageableResponseMapper.toPagination(trainings);
-        logger.info("getTrainingList::TrainingList: {}", response.get("totalItems"));
+        log.info("getTrainingList::TrainingList: {}", response.get("totalItems"));
         return response;
     }
 
@@ -61,7 +60,7 @@ public class TrainingController {
     public Training getTrainingById(
             @PathVariable(value = "id") @Valid UUID id) {
         var foundTraining = this.getTrainingByIdUseCase.execute(id);
-        logger.info("getTrainingById::Id: {}", id);
+        log.info("getTrainingById::Id: {}", id);
         return foundTraining;
     }
 
@@ -71,7 +70,7 @@ public class TrainingController {
             @PageableDefault(page = 0, size = 10) Pageable pageable,
             @RequestParam("name") @Valid @NotBlank String name) {
         var foundTraining = this.trainingListByNameUseCase.execute(name, pageable);
-        logger.info("filterTrainingByName::Name: {}", name);
+        log.info("filterTrainingByName::Name: {}", name);
         return PageableResponseMapper.toPagination(foundTraining);
     }
 
@@ -83,7 +82,7 @@ public class TrainingController {
                 input.name(),
                 input.level());
         UUID id = this.createTrainingUseCase.execute(training);
-        logger.info("createTraining::Training: {}", training.toString());
+        log.info("createTraining::Training: {}", training.toString());
         return new IdentifierDto(id);
     }
 
@@ -126,7 +125,7 @@ public class TrainingController {
                 .level(input.level())
                 .build();
         this.updateTrainingUseCase.execute(training);
-        logger.info("updateTraining::Exercise{}", training.toString());
+        log.info("updateTraining::Exercise{}", training.toString());
     }
 
     @DeleteMapping("/{id}")
@@ -134,6 +133,6 @@ public class TrainingController {
     public void deleteTraining(
             @PathVariable(value = "id") @Valid UUID id) {
         this.deleteTrainingUseCase.execute(id);
-        logger.info("deleteTraining::Id: {}", id);
+        log.info("deleteTraining::Id: {}", id);
     }
 }

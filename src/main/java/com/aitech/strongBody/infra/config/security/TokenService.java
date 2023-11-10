@@ -26,10 +26,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("strong-body-auth-api")
                     .withSubject(user.getEmail())
-                    .withClaim("name", user.getName())
                     .withClaim("email", user.getEmail())
-                    .withClaim("nickname", user.getNickname())
-                    .withClaim("avatarUrl", user.getAvatarUrl())
                     .withClaim("role", user.getRole().toString())
                     .withExpiresAt(this.getExpirationTime())
                     .sign(algorithm);

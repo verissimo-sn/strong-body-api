@@ -4,12 +4,14 @@ import com.aitech.strongBody.application.useCase.user.GetUserByIdUseCase;
 import com.aitech.strongBody.application.useCase.user.UpdateUserUseCase;
 import com.aitech.strongBody.domain.entity.User;
 import com.aitech.strongBody.infra.rest.dto.user.UpdateUserDto;
+import com.aitech.strongBody.infra.rest.dto.user.UserResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -26,13 +28,20 @@ public class UserController {
     @Autowired
     private final UpdateUserUseCase updateUserUseCase;
 
-    @GetMapping("/{id}")
+    @GetMapping("/me")
     @ResponseStatus(HttpStatus.OK)
-    public User getUserById(
-            @PathVariable(value = "id") @Valid UUID id) {
-        var foundUser = this.getUserByIdUseCase.execute(id);
-        log.info("getUserById::Id: {}", id);
-        return foundUser;
+    public UserResponseDto getUserProfile(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        var foundUser = this.getUserByIdUseCase.execute(user.getId());
+        log.info("getUserProfile::Id: {}", user.getId());
+        return new UserResponseDto(
+                foundUser.getId(),
+                foundUser.getName(),
+                foundUser.getEmail(),
+                foundUser.getNickname(),
+                foundUser.getAvatarUrl(),
+                foundUser.getRole()
+        );
     }
 
     @PutMapping("/{id}")

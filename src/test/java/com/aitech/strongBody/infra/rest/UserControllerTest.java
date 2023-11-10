@@ -2,6 +2,7 @@ package com.aitech.strongBody.infra.rest;
 
 import com.aitech.strongBody.application.exception.NotFoundException;
 import com.aitech.strongBody.domain.entity.User;
+import com.aitech.strongBody.domain.enums.UserRoles;
 import com.aitech.strongBody.domain.repository.UserRepository;
 import com.aitech.strongBody.infra.rest.dto.user.CreateUserDto;
 import com.aitech.strongBody.infra.rest.dto.user.UpdateUserDto;
@@ -17,7 +18,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Tag("integration")
@@ -35,51 +35,19 @@ public class UserControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        this.user = User.builder()
-                .id(UUID.randomUUID())
-                .name("Test user name")
-                .email("test@mail.com")
-                .nickname("test nickname")
-                .avatarUrl("http://test.com/avatar")
-                .password("testPass")
-                .build();
+        this.user = new User(
+                "Test user name",
+                "test@mail.com",
+                "test nickname",
+                "http://test.com/avatar",
+                "testPass",
+                UserRoles.USER);
         this.userRepository.create(this.user);
     }
 
     @AfterEach
     void afterEach() {
         this.userRepository.deleteAll();
-    }
-
-
-    @Test
-    @DisplayName("Should throw notFound exception when get user by id when user not created")
-    void throwExceptionWithGetUserByIdWhenUserNotCreated() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{id}", UUID.randomUUID()))
-                .andExpect(status().isNotFound())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException))
-                .andExpect(result -> assertEquals("User not found", Objects.requireNonNull(result.getResolvedException()).getMessage()));
-    }
-
-    @Test
-    @DisplayName("Should throw badRequest exception when get user by id with invalid id")
-    void throwExceptionWhenGetUserByIdWithInvalidId() throws Exception {
-        // TODO: format error response message with a custom exception handler
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{id}", "invalid-uuid"))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    @DisplayName("Should get user by id")
-    void getUserById() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{id}", this.user.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(this.user.getId().toString()))
-                .andExpect(jsonPath("$.name").value(this.user.getName()))
-                .andExpect(jsonPath("$.email").value(this.user.getEmail()))
-                .andExpect(jsonPath("$.nickname").value(this.user.getNickname()))
-                .andExpect(jsonPath("$.avatarUrl").value(this.user.getAvatarUrl()))
-                .andExpect(jsonPath("$.password").value(this.user.getPassword()));
     }
 
     @Test
@@ -104,8 +72,6 @@ public class UserControllerTest {
                 .andExpect(status().isOk());
 
         var foundUser = this.userRepository.getById(this.user.getId());
-        System.out.println("--------------------------------------");
-        System.out.println(foundUser);
         foundUser.ifPresent(user -> assertAll(
                 () -> assertEquals(updatedUser.getId(), user.getId()),
                 () -> assertEquals(updatedUser.getName(), user.getName()),
